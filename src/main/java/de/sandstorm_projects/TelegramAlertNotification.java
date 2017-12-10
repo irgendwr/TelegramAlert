@@ -21,57 +21,84 @@ import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.NumberField;
 import org.graylog2.plugin.configuration.fields.TextField;
 import org.graylog2.plugin.streams.Stream;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class TelegramAlertNotification implements AlarmCallback {
-
 	private static final String TOKEN = "token";
+	private static final String USERNAME = "username";
 	private static final String CHAT = "chat";
 	private static final String LOG_FILE = "log_file";
+	
     private Configuration cfg;
-    private Logger log;
+    private Logger logger;
+    private TelegramLongPollingBot bot;
+    private long chatId;
 
     @Override
     public void initialize(Configuration cfg) throws AlarmCallbackConfigurationException {
         this.cfg = cfg;
-        log = Logger.getLogger("TelegramAlert");
+        logger = Logger.getLogger("TelegramAlert");
         String logPath = cfg.getString(LOG_FILE);
         
         if (!logPath.isEmpty()) {
 	        try {
 	        	FileHandler handler = new FileHandler(logPath, true);
-	            log.addHandler(handler);
+	            logger.addHandler(handler);
 	            handler.setFormatter(new SimpleFormatter());
 	        } catch (IOException | SecurityException ex) {
 	            ex.printStackTrace();
 	        }
         }
         
-        log.info("Alert was initialized successfully");
+        ApiContextInitializer.init();
+        
+        TelegramBotsApi botApi = new TelegramBotsApi();
+        chatId = cfg.getInt(CHAT);
+    	bot = new TelegramAlertBot(cfg.getString(USERNAME), cfg.getString(TOKEN));
+        
+        try {
+        	botApi.registerBot(bot);
+  
+        	bot.execute(new SendMessage()
+        			.setChatId(chatId)
+                    .setText("Bot loaded successfully! " + Emoji.SMILING_FACE_WITH_SMILING_EYES
+            ));
+        } catch (TelegramApiException e) {
+            logger.warning(e.getMessage());
+        }
+        
+        logger.info("Alert was initialized successfully");
     }
 
     @Override
     public void call(Stream stream, AlertCondition.CheckResult checkResult) throws AlarmCallbackException {
-        // TODO: send message to telegram
+    	try {
+        	bot.execute(new SendMessage()
+        			.setChatId(chatId)
+                    .setText(createRequestMsg(stream, checkResult)
+            ));
+        } catch (TelegramApiException e) {
+            logger.warning(e.getMessage());
+        }
     }
 
 
     private String createRequestMsg(Stream stream, AlertCondition.CheckResult checkResult) {
-        String description = checkResult.getResultDescription();
         String title = stream.getTitle();
-        if (title != null) {
-            description = description.replace("Stream", title);
-		}
-		description = description.replace("\"", "'");
 		List<String> backlog = getAlarmBacklog(checkResult);
-		StringBuilder sb = new StringBuilder("\"");
-		sb.append(description);
-		sb.append(":\\n");
-        for (String message : backlog) {
-			String msg = message.replace("\"", "'");
+		StringBuilder sb = new StringBuilder("");
+		sb.append(title);
+		sb.append(":\n```");
+		
+		for (String msg : backlog) {
             sb.append(msg);
-            sb.append("\\n");
+            sb.append("\n");
         }
-		sb.append("\"");
+		sb.append("```");
 		return sb.toString();
     }
 
@@ -100,6 +127,8 @@ public class TelegramAlertNotification implements AlarmCallback {
         final ConfigurationRequest cfgRequest = new ConfigurationRequest();
         cfgRequest.addField(new TextField(TOKEN, "Bot Token", "",  "HTTP API Token you get from @BotFather",
         		ConfigurationField.Optional.NOT_OPTIONAL));
+        cfgRequest.addField(new TextField(USERNAME, "Bot Username", "",  "Username of your bot",
+        		ConfigurationField.Optional.NOT_OPTIONAL));
         cfgRequest.addField(new NumberField(CHAT, "Chat ID", 0, "ID of the chat that messages should be sent to",
         		ConfigurationField.Optional.NOT_OPTIONAL));
         cfgRequest.addField(new TextField(LOG_FILE, "File log", "/tmp/telegramAlert.log", "File path for debug logging"));
@@ -121,8 +150,11 @@ public class TelegramAlertNotification implements AlarmCallback {
         if (!cfg.stringIsSet(TOKEN)) {
             throw new ConfigurationException("Token is not set.");
         }
+        if (!cfg.stringIsSet(USERNAME)) {
+            throw new ConfigurationException("Token is not set.");
+        }
 
-        if (!cfg.stringIsSet(CHAT)) {
+        if (!cfg.intIsSet(CHAT)) {
             throw new ConfigurationException("Chat ID is not set.");
         }
     }

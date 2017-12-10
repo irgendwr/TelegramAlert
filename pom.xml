@@ -25,6 +25,11 @@
             <version>${graylog2.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+        <groupId>org.telegram</groupId>
+        <artifactId>telegrambots</artifactId>
+        <version>3.5</version>
+    </dependency>
     </dependencies>
 
     <build>
