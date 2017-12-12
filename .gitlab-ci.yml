@@ -16,15 +16,11 @@ stages:
 
 unittest:
   stage: test
-  dependencies:
-    - build-job
   script:
     - "mvn clean test-compile $MAVEN_CLI_OPTS"
 
 # integrationtest:
 #   stage: test
-#   dependencies:
-#     - build-job
 #   script:
 #     - "mvn verify $MAVEN_CLI_OPTS"
 
