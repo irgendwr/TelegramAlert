@@ -1,14 +1,19 @@
 package de.sandstorm_projects;
 
 import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class TelegramAlertBot extends TelegramLongPollingBot {
 	private String username;
 	private String token;
 	
-	public TelegramAlertBot(String username, String token) {
-		this.username = username;
+	public TelegramAlertBot(String token) {
+		try {
+			this.username = getMe().getUserName();
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
+		}
 		this.token = token;
 	}
 	
