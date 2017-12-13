@@ -28,6 +28,8 @@ build:
   stage: build
   script:
     - "mvn package $MAVEN_CLI_OPTS"
+    - ls -la target
+    - mv target/telegram-alert-*.jar ./telegram-alert.jar
   artifacts:
     paths:
-      - "target/telegram-alert-*.jar"
+      - "telegram-alert.jar"
