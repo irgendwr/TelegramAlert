@@ -1,8 +1,9 @@
 # TelegramAlert Plugin for Graylog
+> TelegramAlert enables you to send Graylog alerts via Telegram to a specified chat or channel.
 
-Enables you to send Graylog alerts via Telegram.
+[![Build Status](https://travis-ci.org/irgendwr/TelegramAlert.svg?branch=master)](https://travis-ci.org/irgendwr/TelegramAlert)
 
-**Required Graylog version:** 2.0 and later
+**Requires:** Graylog 2.0 or later
 
 Installation
 ------------
