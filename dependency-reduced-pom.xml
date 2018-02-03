@@ -98,11 +98,11 @@
     </dependency>
   </dependencies>
   <properties>
-    <graylog2.plugin-dir>/usr/share/graylog-server/plugin</graylog2.plugin-dir>
-    <graylog2.version>1.0.0</graylog2.version>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <graylog2.version>1.0.0</graylog2.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <graylog2.plugin-dir>/usr/share/graylog-server/plugin</graylog2.plugin-dir>
   </properties>
 </project>
 

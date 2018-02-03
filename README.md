@@ -3,28 +3,23 @@
 
 [![Build Status](https://travis-ci.org/irgendwr/TelegramAlert.svg?branch=master)](https://travis-ci.org/irgendwr/TelegramAlert)
 
-**Requires:** Graylog 2.0 or later
+## Requirements
+- Graylog 2.0 or later
 
-Installation
-------------
-
-[Download the plugin](https://github.com/irgendwr/TelegramAlert/releases)
+## Installation
+1. [Download the plugin](https://github.com/irgendwr/TelegramAlert/releases)
 and place the `.jar` file in your plugins folder that is configured in your `graylog.conf`.
 The default is just `plugins/` relative from your `graylog-server` directory.
 
-Restart graylog-server and you are done.
+2. Restart graylog-server: `service graylog-server restart`
 
-Usage
------
-Create a new bot with the [BotFather](https://t.me/BotFather).
+## Usage
+3. Create a new bot with the [BotFather](https://t.me/BotFather).
 
-Add a new notification in the web-interface and select `TelegramAlert` as the notification type.
+4. Add a new notification in the web-interface and select `TelegramAlert` as the notification type.
 
-
-Build
------
-
-With maven:
+## Build
+With [maven](https://maven.apache.org/):
 
 ```
 mvn clean package
