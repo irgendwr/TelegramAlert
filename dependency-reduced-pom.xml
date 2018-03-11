@@ -3,15 +3,15 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.sandstorm_projects</groupId>
   <artifactId>telegram-alert</artifactId>
-  <name>${project.artifactId}</name>
-  <version>1.0.0</version>
-  <description>Sends graylog alerts to telegram.</description>
+  <name>TelegramAlert</name>
+  <version>1.0.1</version>
+  <description>Sends Graylog alerts to Telegram.</description>
   <url>https://sandstorm-projects.de</url>
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.1</version>
+        <version>2.4.3</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -34,57 +34,313 @@
   <dependencies>
     <dependency>
       <groupId>org.graylog2</groupId>
-      <artifactId>graylog2-plugin</artifactId>
-      <version>1.0.0</version>
+      <artifactId>graylog2-server</artifactId>
+      <version>2.0.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
+          <artifactId>airline</artifactId>
+          <groupId>io.airlift</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>guava</artifactId>
           <groupId>com.google.guava</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guava-retrying</artifactId>
+          <groupId>com.github.rholder</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>shiro-core</artifactId>
+          <groupId>org.apache.shiro</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>api-all</artifactId>
+          <groupId>org.apache.directory.api</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guice</artifactId>
+          <groupId>com.google.inject</groupId>
         </exclusion>
         <exclusion>
           <artifactId>guice-assistedinject</artifactId>
           <groupId>com.google.inject.extensions</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>joda-time</artifactId>
-          <groupId>joda-time</groupId>
+          <artifactId>guice-multibindings</artifactId>
+          <groupId>com.google.inject.extensions</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>javax.inject</artifactId>
+          <groupId>org.glassfish.hk2.external</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>javax.inject</artifactId>
+          <groupId>javax.inject</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jadconfig</artifactId>
+          <groupId>com.github.joschi</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mongo-java-driver</artifactId>
+          <groupId>org.mongodb</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>mongojack</artifactId>
+          <groupId>org.mongojack</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>okhttp</artifactId>
+          <groupId>com.squareup.okhttp3</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-core</artifactId>
+          <groupId>com.fasterxml.jackson.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-databind</artifactId>
+          <groupId>com.fasterxml.jackson.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-annotations</artifactId>
+          <groupId>com.fasterxml.jackson.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-jaxrs-base</artifactId>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-datatype-guava</artifactId>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-datatype-jdk8</artifactId>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-datatype-joda</artifactId>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-module-jsonSchema</artifactId>
+          <groupId>com.fasterxml.jackson.module</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jackson-jaxrs-json-provider</artifactId>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>metrics-annotation</artifactId>
+          <groupId>io.dropwizard.metrics</groupId>
         </exclusion>
         <exclusion>
           <artifactId>metrics-core</artifactId>
           <groupId>io.dropwizard.metrics</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>disruptor</artifactId>
-          <groupId>com.lmax</groupId>
+          <artifactId>metrics-log4j2</artifactId>
+          <groupId>io.dropwizard.metrics</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>guice-multibindings</artifactId>
-          <groupId>com.google.inject.extensions</groupId>
+          <artifactId>metrics-jvm</artifactId>
+          <groupId>io.dropwizard.metrics</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>msgpack</artifactId>
-          <groupId>org.msgpack</groupId>
+          <artifactId>metrics-json</artifactId>
+          <groupId>io.dropwizard.metrics</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>protobuf-java</artifactId>
-          <groupId>com.google.protobuf</groupId>
+          <artifactId>commons-email</artifactId>
+          <groupId>org.apache.commons</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>netty</artifactId>
-          <groupId>io.netty</groupId>
+          <artifactId>jersey-common</artifactId>
+          <groupId>org.glassfish.jersey.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jersey-server</artifactId>
+          <groupId>org.glassfish.jersey.core</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jersey-bean-validation</artifactId>
+          <groupId>org.glassfish.jersey.ext</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jersey-media-json-jackson</artifactId>
+          <groupId>org.glassfish.jersey.media</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jersey-container-grizzly2-http</artifactId>
+          <groupId>org.glassfish.jersey.containers</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>guice-bridge</artifactId>
+          <groupId>org.glassfish.hk2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>hk2-api</artifactId>
+          <groupId>org.glassfish.hk2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>hk2-locator</artifactId>
+          <groupId>org.glassfish.hk2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>javax.ws.rs-api</artifactId>
+          <groupId>javax.ws.rs</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>reflections</artifactId>
+          <groupId>org.reflections</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>opencsv</artifactId>
+          <groupId>net.sf.opencsv</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>commons-io</artifactId>
+          <groupId>commons-io</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>natty</artifactId>
+          <groupId>com.joestelmach</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jmte</artifactId>
+          <groupId>com.floreysoft</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>elasticsearch</artifactId>
+          <groupId>org.elasticsearch</groupId>
         </exclusion>
         <exclusion>
           <artifactId>kie-api</artifactId>
           <groupId>org.kie</groupId>
         </exclusion>
         <exclusion>
+          <artifactId>drools-compiler</artifactId>
+          <groupId>org.drools</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>disruptor</artifactId>
+          <groupId>com.lmax</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>joda-time</artifactId>
+          <groupId>joda-time</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>uuid</artifactId>
           <groupId>com.eaio.uuid</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>jadconfig</artifactId>
-          <groupId>com.github.joschi</groupId>
+          <artifactId>grok</artifactId>
+          <groupId>org.graylog2.repackaged</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>gelfclient</artifactId>
+          <groupId>org.graylog2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>swagger-annotations</artifactId>
+          <groupId>io.swagger</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>hibernate-validator</artifactId>
+          <groupId>org.hibernate</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j-api</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j-core</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j-slf4j-impl</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j-over-slf4j</artifactId>
+          <groupId>org.slf4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>log4j-jul</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jbcrypt</artifactId>
+          <groupId>org.mindrot</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>retrofit</artifactId>
+          <groupId>com.squareup.retrofit2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>converter-jackson</artifactId>
+          <groupId>com.squareup.retrofit2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>os-platform-finder</artifactId>
+          <groupId>org.graylog.repackaged</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>javax.el-api</artifactId>
+          <groupId>javax.el</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>netty</artifactId>
+          <groupId>io.netty</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>javax.annotation-api</artifactId>
+          <groupId>javax.annotation</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>HdrHistogram</artifactId>
+          <groupId>org.hdrhistogram</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>sigar</artifactId>
+          <groupId>org.fusesource</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>amqp-client</artifactId>
+          <groupId>com.rabbitmq</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>kafka_2.11</artifactId>
+          <groupId>org.apache.kafka</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>syslog4j</artifactId>
+          <groupId>org.graylog2</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>json-path</artifactId>
+          <groupId>com.jayway.jsonpath</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>java-semver</artifactId>
+          <groupId>com.github.zafarkhaja</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>protobuf-java</artifactId>
+          <groupId>com.google.protobuf</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>validation-api</artifactId>
+          <groupId>javax.validation</groupId>
         </exclusion>
         <exclusion>
           <artifactId>slf4j-api</artifactId>
@@ -98,11 +354,11 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <graylog2.version>1.0.0</graylog2.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <graylog2.plugin-dir>/usr/share/graylog-server/plugin</graylog2.plugin-dir>
+    <graylog2.version>2.0.0</graylog2.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
 

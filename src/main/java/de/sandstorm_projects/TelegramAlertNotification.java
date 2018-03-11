@@ -1,13 +1,10 @@
 package de.sandstorm_projects;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.FileHandler;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import org.graylog2.plugin.MessageSummary;
 import org.graylog2.plugin.alarms.AlertCondition;
@@ -21,47 +18,26 @@ import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.TextField;
 import org.graylog2.plugin.configuration.fields.TextField.Attribute;
 import org.graylog2.plugin.streams.Stream;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class TelegramAlertNotification implements AlarmCallback {
 	private static final String CHAT = "chat";
 	private static final String MESSAGE = "message";
 	private static final String TOKEN = "token";
 	private static final String WEBINTERFACE_URL = "webinterface_url";
-	private static final String LOG_FILE = "log_file";
 	
     private Configuration cfg;
     private Logger logger;
-    private TelegramLongPollingBot bot;
-    private long chatId;
+    private TelegramBot bot;
     private String msgTemplate;
     private String webinterfaceUrl;
 
     @Override
     public void initialize(Configuration cfg) throws AlarmCallbackConfigurationException {
         this.cfg = cfg;
+        
         logger = Logger.getLogger("TelegramAlert");
-        String logPath = cfg.getString(LOG_FILE);
+        bot = new TelegramBot(cfg.getString(TOKEN), cfg.getString(CHAT), logger);
         
-        if (!logPath.isEmpty()) {
-	        try {
-	        	FileHandler handler = new FileHandler(logPath, true);
-	            logger.addHandler(handler);
-	            handler.setFormatter(new SimpleFormatter());
-	        } catch (IOException | SecurityException ex) {
-	            ex.printStackTrace();
-	        }
-        }
-        
-        ApiContextInitializer.init();
-        
-        TelegramBotsApi botApi = new TelegramBotsApi();
-    	bot = new TelegramAlertBot(cfg.getString(TOKEN));
-        chatId = Long.parseLong(cfg.getString(CHAT));
         msgTemplate = cfg.getString(MESSAGE);
         webinterfaceUrl = cfg.getString(WEBINTERFACE_URL);
         
@@ -69,26 +45,12 @@ public class TelegramAlertNotification implements AlarmCallback {
         	webinterfaceUrl = webinterfaceUrl + "/";
         }
         
-        try {
-        	botApi.registerBot(bot);
-        } catch (TelegramApiException e) {
-            logger.warning(e.getMessage());
-        }
-        
-        logger.info("Alert was initialized successfully");
+        logger.info("TelegramAlert was initialized successfully");
     }
 
     @Override
     public void call(Stream stream, AlertCondition.CheckResult checkResult) throws AlarmCallbackException {
-    	try {
-        	bot.execute(new SendMessage()
-        			.setChatId(chatId)
-        			.setParseMode("Markdown")
-                    .setText(createRequestMsg(stream, checkResult)
-            ));
-        } catch (TelegramApiException e) {
-            logger.warning(e.getMessage());
-        }
+    	bot.sendMessage(createRequestMsg(stream, checkResult));
     }
 
 
@@ -166,12 +128,6 @@ public class TelegramAlertNotification implements AlarmCallback {
                 "URL to your Graylog web interface. Used to build links in alarm notification.",
                 ConfigurationField.Optional.NOT_OPTIONAL)
         );
-        cfgRequest.addField(new TextField(
-        		LOG_FILE, "File log",
-        		"/tmp/telegramAlert.log",
-        		"File path for debug logging",
-                ConfigurationField.Optional.OPTIONAL
-        ));
         return cfgRequest;
     }
 

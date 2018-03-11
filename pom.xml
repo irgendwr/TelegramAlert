@@ -4,40 +4,40 @@
 
     <groupId>de.sandstorm_projects</groupId>
     <artifactId>telegram-alert</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
-    <name>${project.artifactId}</name>
+    <name>TelegramAlert</name>
+    <description>Sends Graylog alerts to Telegram.</description>
     <url>https://sandstorm-projects.de</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <graylog2.version>1.0.0</graylog2.version>
+        <graylog2.version>2.0.0</graylog2.version>
         <graylog2.plugin-dir>/usr/share/graylog-server/plugin</graylog2.plugin-dir>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.graylog2</groupId>
-            <artifactId>graylog2-plugin</artifactId>
+            <artifactId>graylog2-server</artifactId>
             <version>${graylog2.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-        <groupId>org.telegram</groupId>
-        <artifactId>telegrambots</artifactId>
-        <version>3.5</version>
-    </dependency>
+    		<groupId>org.apache.httpcomponents</groupId>
+    		<artifactId>httpclient</artifactId>
+    		<version>4.5.5</version>
+		</dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.1</version>
+                <version>2.4.3</version>
                 <configuration>
                     <minimizeJar>false</minimizeJar>
                 </configuration>
@@ -57,5 +57,4 @@
             </plugin>
         </plugins>
     </build>
-    <description>Sends graylog alerts to telegram.</description>
 </project>
