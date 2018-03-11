@@ -1,4 +1,4 @@
-package de.sandstorm_projects;
+package de.sandstorm_projects.telegramAlert;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +42,7 @@ public class TelegramBot {
 			params.add(new BasicNameValuePair("chat_id", chat));
 			params.add(new BasicNameValuePair("text", msg));
 			params.add(new BasicNameValuePair("parse_mode", parseMode));
+			params.add(new BasicNameValuePair("disable_web_page_preview", "true"));
 			request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
 			HttpResponse response = client.execute(request);

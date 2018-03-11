@@ -1,4 +1,4 @@
-package de.sandstorm_projects;
+package de.sandstorm_projects.telegramAlert;
 
 import org.graylog2.plugin.PluginMetaData;
 import org.graylog2.plugin.ServerStatus;
@@ -8,15 +8,15 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 
-public class TelegramAlertMetaData implements PluginMetaData {
+public class TelegramPluginMetadata implements PluginMetaData {
     @Override
     public String getUniqueId() {
-        return "de.sandstorm_projects.TelegramAlert";
+        return TelegramPlugin.class.getPackage().getName();
     }
 
     @Override
     public String getName() {
-        return "TelegramAlert";
+        return "Telegram Alert";
     }
 
     @Override
@@ -31,12 +31,12 @@ public class TelegramAlertMetaData implements PluginMetaData {
 
     @Override
     public Version getVersion() {
-        return new Version(1, 0, 0);
+        return new Version(1, 0, 1);
     }
 
     @Override
     public String getDescription() {
-        return "Sends graylog alerts to telegram.";
+        return "Allows you to send alert messages to a specified Telegram chat.";
     }
 
     @Override
