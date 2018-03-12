@@ -28,6 +28,9 @@ Add a new alert notification in your Graylog-interface and select `Telegram Aler
 
 The message is a template that can be configured as described in the [Graylog Documentation](http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification)
 
+![Add alert notification](screenshots/add_alert_notification.png)
+![Create new Telegram Alert](screenshots/new_telegram_alert.png)
+
 ## Build
 
 This project is using [Maven](https://maven.apache.org) and requires Java 8 or higher.
