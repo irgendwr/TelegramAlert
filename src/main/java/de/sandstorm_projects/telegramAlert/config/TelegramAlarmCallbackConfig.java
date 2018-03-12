@@ -17,7 +17,7 @@ public class TelegramAlarmCallbackConfig {
         		"[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
         		"```\n" +
                 "${foreach backlog message}\n" +
-        		"${message}\n" +
+        		"${message.message}\n\\n" +
                 "${end}\n" +
                 "```",
         		"See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
