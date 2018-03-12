@@ -12,26 +12,28 @@ public class TelegramAlarmCallbackConfig {
 	
 	public static ConfigurationRequest createRequest() {
         final ConfigurationRequest configurationRequest = new ConfigurationRequest();
-        // TODO: update to template engine
         configurationRequest.addField(new TextField(
         		Config.MESSAGE, "Message",
-        		"[%streamTitle%](%streamUrl%):\n%backlog%",
-        		"Message that will be sent, Placeholders: %streamTitle%, %streamDescription%, %streamUrl%, %alertDescription%, %backlog%",
+        		"[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
+        		"```\n" +
+                "${foreach backlog message}\n" +
+        		"${message}\n" +
+                "${end}\n" +
+                "```",
+        		"See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
         		ConfigurationField.Optional.NOT_OPTIONAL,
         		Attribute.TEXTAREA
         ));
         configurationRequest.addField(new TextField(
-        		Config.CHAT, "Chat ID", "",
-        		"ID of the chat that messages should be sent to",
+        		Config.CHAT, "Chat ID", "", "",
         		ConfigurationField.Optional.NOT_OPTIONAL
         ));
         configurationRequest.addField(new TextField(
         		Config.TOKEN, "Bot Token", "",
-        		"HTTP API Token you get from @BotFather",
+        		"HTTP API Token from @BotFather",
         		ConfigurationField.Optional.NOT_OPTIONAL,
         		Attribute.IS_PASSWORD
         ));
-
         configurationRequest.addField(new TextField(
         		Config.GRAYLOG_URL, "Graylog URL", "",
                 "URL to your Graylog web interface. Used to build links in alarm notification.",

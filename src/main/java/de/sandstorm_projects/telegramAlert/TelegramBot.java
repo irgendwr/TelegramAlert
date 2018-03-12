@@ -12,6 +12,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.graylog2.plugin.configuration.Configuration;
+
+import de.sandstorm_projects.telegramAlert.config.Config;
 
 public class TelegramBot {
 	private static final String API = "https://api.telegram.org/bot%s/%s";
@@ -21,12 +24,12 @@ public class TelegramBot {
 	private Logger logger;
 	private String parseMode;
 	
-	public TelegramBot(String token, String chat, Logger logger) {
-		this.token = token;
-		this.chat = chat;
-		this.logger = logger;
+	public TelegramBot(Configuration config) {
+		this.token = config.getString(Config.TOKEN);
+		this.chat = config.getString(Config.CHAT);
 		
 		parseMode = "Markdown";
+		logger = Logger.getLogger("TelegramAlert");
 	}
 	
 	public void setParseMode(String parseMode) {
