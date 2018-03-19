@@ -84,18 +84,18 @@ public class TelegramAlarmCallback implements AlarmCallback {
         return backlog;
     }
 
-    protected String buildStreamLink(Stream stream) {
+    private String buildStreamLink(Stream stream) {
         return getGraylogURL() + "streams/" + stream.getId() + "/messages?q=%2A&rangetype=relative&relative=3600";
     }
 
-    protected String buildMessageLink(String index, String id) {
+    private String buildMessageLink(String index, String id) {
         return getGraylogURL() + "messages/" + index + "/" + id;
     }
     
     private String getGraylogURL() {
     	String url = config.getString(Config.GRAYLOG_URL);
         
-        if (!url.endsWith("/")) {
+        if (url != null && !url.endsWith("/")) {
         	url += "/";
         }
         

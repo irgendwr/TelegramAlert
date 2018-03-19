@@ -43,14 +43,14 @@ public class TelegramAlarmCallbackConfig {
 	}
 	
 	public static void check(Configuration config) throws ConfigurationException {
-		String[] mandetoryFields = {
+		String[] mandatoryFields = {
 			Config.MESSAGE,
 			Config.CHAT,
 			Config.TOKEN,
 			Config.GRAYLOG_URL
 		};
 		
-		for (String field : mandetoryFields) {
+		for (String field : mandatoryFields) {
 			if (!config.stringIsSet(field)) {
 	            throw new ConfigurationException(String.format(ERROR_NOT_SET, field));
 			}

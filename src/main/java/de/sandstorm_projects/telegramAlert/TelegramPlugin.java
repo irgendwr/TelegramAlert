@@ -15,6 +15,6 @@ public class TelegramPlugin implements Plugin {
 
     @Override
     public Collection<PluginModule> modules () {
-        return Collections.<PluginModule>singletonList(new TelegramModule());
+        return Collections.singletonList(new TelegramModule());
     }
 }

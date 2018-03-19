@@ -26,12 +26,12 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public URI getURL() {
-        return URI.create("https://sandstorm-projects.de");
+        return URI.create("https://irgendwr.github.io/TelegramAlert/");
     }
 
     @Override
     public Version getVersion() {
-        return new Version(2, 0, 0);
+        return new Version(2, 0, 1);
     }
 
     @Override
