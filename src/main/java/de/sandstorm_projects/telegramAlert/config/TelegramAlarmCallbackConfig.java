@@ -12,67 +12,67 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TelegramAlarmCallbackConfig {
-	private static final String ERROR_NOT_SET = "%s is mandatory and must not be empty.";
-	
-	public static ConfigurationRequest createRequest() {
+    private static final String ERROR_NOT_SET = "%s is mandatory and must not be empty.";
+
+    public static ConfigurationRequest createRequest() {
         final ConfigurationRequest configurationRequest = new ConfigurationRequest();
 
         configurationRequest.addField(new TextField(
-        		Config.MESSAGE, "Message",
-        		"[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
-        		"```\n" +
+                Config.MESSAGE, "Message",
+                "[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
+                "```\n" +
                 "${foreach backlog message}\n" +
-        		"${message.message}\n\\n" +
+                "${message.message}\n\\n" +
                 "${end}\n" +
                 "```",
-        		"See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
-        		ConfigurationField.Optional.NOT_OPTIONAL,
-        		Attribute.TEXTAREA
+                "See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
+                ConfigurationField.Optional.NOT_OPTIONAL,
+                Attribute.TEXTAREA
         ));
 
         configurationRequest.addField(new TextField(
-        		Config.CHAT, "Chat ID", "", "",
-        		ConfigurationField.Optional.NOT_OPTIONAL
+                Config.CHAT, "Chat ID", "", "",
+                ConfigurationField.Optional.NOT_OPTIONAL
         ));
 
-		Map<String, String> parseMode = new HashMap<>(3);
-		parseMode.put("", "none");
-		parseMode.put("Markdown", "Markdown");
-		parseMode.put("HTML", "HTML");
-		configurationRequest.addField(new DropdownField(
-				Config.PARSE_MODE, "Chat ID", "", parseMode,
-				"See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
-				ConfigurationField.Optional.NOT_OPTIONAL));
+        Map<String, String> parseMode = new HashMap<>(3);
+        parseMode.put("", "none");
+        parseMode.put("Markdown", "Markdown");
+        parseMode.put("HTML", "HTML");
+        configurationRequest.addField(new DropdownField(
+                Config.PARSE_MODE, "Chat ID", "", parseMode,
+                "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
+                ConfigurationField.Optional.NOT_OPTIONAL));
 
         configurationRequest.addField(new TextField(
-        		Config.TOKEN, "Bot Token", "",
-        		"HTTP API Token from @BotFather",
-        		ConfigurationField.Optional.NOT_OPTIONAL,
-        		Attribute.IS_PASSWORD
+                Config.TOKEN, "Bot Token", "",
+                "HTTP API Token from @BotFather",
+                ConfigurationField.Optional.NOT_OPTIONAL,
+                Attribute.IS_PASSWORD
         ));
 
         configurationRequest.addField(new TextField(
-        		Config.GRAYLOG_URL, "Graylog URL", "",
+                Config.GRAYLOG_URL, "Graylog URL", "",
                 "URL to your Graylog web interface. Used to build links in alarm notification.",
                 ConfigurationField.Optional.NOT_OPTIONAL)
         );
 
         return configurationRequest;
-	}
-	
-	public static void check(Configuration config) throws ConfigurationException {
-		String[] mandatoryFields = {
-			Config.MESSAGE,
-			Config.CHAT,
+    }
+
+    public static void check(Configuration config) throws ConfigurationException {
+        String[] mandatoryFields = {
+            Config.MESSAGE,
+            Config.CHAT,
             Config.PARSE_MODE,
-			Config.TOKEN,
-			Config.GRAYLOG_URL
-		};
-		
-		for (String field : mandatoryFields) {
-			if (!config.stringIsSet(field)) {
-	            throw new ConfigurationException(String.format(ERROR_NOT_SET, field));
-			}
-		}
+            Config.TOKEN,
+            Config.GRAYLOG_URL
+        };
+
+        for (String field : mandatoryFields) {
+            if (!config.stringIsSet(field)) {
+                throw new ConfigurationException(String.format(ERROR_NOT_SET, field));
+            }
+        }
     }
 }

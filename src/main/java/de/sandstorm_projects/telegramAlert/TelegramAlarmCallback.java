@@ -31,10 +31,10 @@ public class TelegramAlarmCallback implements AlarmCallback {
 
     @Override
     public void initialize(Configuration config) throws AlarmCallbackConfigurationException {
-    	this.config = config;
-    	
-    	try {
-    		checkConfiguration();
+        this.config = config;
+
+        try {
+            checkConfiguration();
         } catch (ConfigurationException e) {
             throw new AlarmCallbackConfigurationException("Configuration error: " + e.getMessage());
         }
@@ -44,7 +44,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
 
     @Override
     public void call(Stream stream, AlertCondition.CheckResult result) throws AlarmCallbackException {
-    	bot.sendMessage(buildMessage(stream, result));
+        bot.sendMessage(buildMessage(stream, result));
     }
     
     private String buildMessage(Stream stream, AlertCondition.CheckResult result) {
@@ -93,10 +93,10 @@ public class TelegramAlarmCallback implements AlarmCallback {
     }*/
     
     private String getGraylogURL() {
-    	String url = config.getString(Config.GRAYLOG_URL);
+        String url = config.getString(Config.GRAYLOG_URL);
         
         if (url != null && !url.endsWith("/")) {
-        	url += "/";
+            url += "/";
         }
         
         return url;
@@ -119,6 +119,6 @@ public class TelegramAlarmCallback implements AlarmCallback {
 
     @Override
     public void checkConfiguration() throws ConfigurationException {
-    	TelegramAlarmCallbackConfig.check(config);
+        TelegramAlarmCallbackConfig.check(config);
     }
 }

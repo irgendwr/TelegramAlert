@@ -9,7 +9,7 @@
 
     <name>TelegramAlert</name>
     <description>Allows you to send alert messages to a specified Telegram chat.</description>
-    <url>https://sandstorm-projects.de</url>
+    <url>https://irgendwr.github.io/TelegramAlert/</url>
     
     <scm>
         <connection>scm:git:https://github.com/irgendwr/TelegramAlert.git</connection>
@@ -33,10 +33,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-    		<groupId>org.apache.httpcomponents</groupId>
-    		<artifactId>httpclient</artifactId>
-    		<version>4.5.5</version>
-		</dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+        </dependency>
     </dependencies>
     
     <build>
