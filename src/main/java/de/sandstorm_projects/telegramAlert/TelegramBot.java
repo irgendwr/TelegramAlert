@@ -28,21 +28,17 @@ class TelegramBot {
 	TelegramBot(Configuration config) {
 		this.token = config.getString(Config.TOKEN);
 		this.chat = config.getString(Config.CHAT);
-		
-		parseMode = "Markdown";
+		this.parseMode = config.getString(Config.PARSE_MODE);
+
 		logger = Logger.getLogger("TelegramAlert");
 	}
 	
-	public void setParseMode(String parseMode) {
-		this.parseMode = parseMode;
-	}
-	
-	public void sendMessage(String msg) throws AlarmCallbackException {
+	void sendMessage(String msg) throws AlarmCallbackException {
 		try {
 			HttpClient client = HttpClients.createDefault();
 			HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
 
-			List<NameValuePair> params = new ArrayList<>(2);
+			List<NameValuePair> params = new ArrayList<>(4);
 			params.add(new BasicNameValuePair("chat_id", chat));
 			params.add(new BasicNameValuePair("text", msg));
 			params.add(new BasicNameValuePair("parse_mode", parseMode));
@@ -52,7 +48,7 @@ class TelegramBot {
 			HttpResponse response = client.execute(request);
 			int status = response.getStatusLine().getStatusCode();
 			if (status != 200) {
-                String error = String.format("API request was unsuccessfull, status: %d", status);
+                String error = String.format("API request was unsuccessful, status: %d", status);
 				logger.warning(error);
                 throw new AlarmCallbackException(error);
 			}
