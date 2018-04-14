@@ -36,11 +36,11 @@ public class TelegramAlarmCallbackConfig {
         ));
 
         Map<String, String> parseMode = new HashMap<>(3);
-        parseMode.put("", "none");
+        parseMode.put("text", "Text");
         parseMode.put("Markdown", "Markdown");
         parseMode.put("HTML", "HTML");
         configurationRequest.addField(new DropdownField(
-                Config.PARSE_MODE, "Chat ID", "", parseMode,
+                Config.PARSE_MODE, "Parse Mode", "Markdown", parseMode,
                 "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
                 ConfigurationField.Optional.NOT_OPTIONAL));
 

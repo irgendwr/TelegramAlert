@@ -41,14 +41,16 @@ class TelegramBot {
             List<NameValuePair> params = new ArrayList<>(4);
             params.add(new BasicNameValuePair("chat_id", chat));
             params.add(new BasicNameValuePair("text", msg));
-            params.add(new BasicNameValuePair("parse_mode", parseMode));
             params.add(new BasicNameValuePair("disable_web_page_preview", "true"));
+            if (!parseMode.equals("text")) {
+                params.add(new BasicNameValuePair("parse_mode", parseMode));
+            }
             request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
             if (status != 200) {
-                String error = String.format("API request was unsuccessful, status: %d", status);
+                String error = String.format("API request was unsuccessful (%d)", status);
                 logger.warning(error);
                 throw new AlarmCallbackException(error);
             }
