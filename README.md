@@ -12,7 +12,8 @@ Requires Graylog 2.0 or later.
 ## Installation
 
 [Download the plugin](https://github.com/irgendwr/TelegramAlert/releases/latest)
-and place the `.jar` file in your plugins folder that is configured in your `graylog.conf` as described in the [Graylog documentation](http://docs.graylog.org/en/latest/pages/plugins.html#installing-and-loading-plugins).
+and place the `.jar` file in your plugins folder that is configured in your `graylog.conf`
+as described in the [Graylog documentation](http://docs.graylog.org/en/latest/pages/plugins.html#installing-and-loading-plugins).
 
 Restart graylog-server: `service graylog-server restart`
 
@@ -23,6 +24,13 @@ Restart graylog-server: `service graylog-server restart`
 Create a new bot with the [BotFather](https://t.me/BotFather).
 
 ### Step 2
+
+Send the Bot a message and go to `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
+(replace `<BOT_TOKEN>` with the token you got from BotFather) to get your ID, as shown below.
+
+![Chat ID](screenshots/chat_id.png)
+
+### Step 3
 
 Add a new alert notification in your Graylog-interface and select `Telegram Alert` as the notification type.
 
