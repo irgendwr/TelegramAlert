@@ -6,4 +6,5 @@ public class Config {
     public static final String PARSE_MODE = "parse_mode";
     public static final String TOKEN = "telegram_token";
     public static final String GRAYLOG_URL = "graylog_url";
+    public static final String PROXY = "proxy";
 }

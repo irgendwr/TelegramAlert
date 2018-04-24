@@ -42,20 +42,24 @@ public class TelegramAlarmCallbackConfig {
         configurationRequest.addField(new DropdownField(
                 Config.PARSE_MODE, "Parse Mode", "Markdown", parseMode,
                 "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
-                ConfigurationField.Optional.NOT_OPTIONAL));
-
+                ConfigurationField.Optional.NOT_OPTIONAL
+        ));
         configurationRequest.addField(new TextField(
                 Config.TOKEN, "Bot Token", "",
                 "HTTP API Token from @BotFather",
                 ConfigurationField.Optional.NOT_OPTIONAL,
                 Attribute.IS_PASSWORD
         ));
-
         configurationRequest.addField(new TextField(
                 Config.GRAYLOG_URL, "Graylog URL", "",
                 "URL to your Graylog web interface. Used to build links in alarm notification.",
-                ConfigurationField.Optional.NOT_OPTIONAL)
-        );
+                ConfigurationField.Optional.NOT_OPTIONAL
+        ));
+        configurationRequest.addField(new TextField(
+                Config.PROXY, "Proxy", null,
+                "Proxy address in the following format: <ProxyAddress>:<Port>",
+                ConfigurationField.Optional.OPTIONAL
+        ));
 
         return configurationRequest;
     }
@@ -72,6 +76,15 @@ public class TelegramAlarmCallbackConfig {
         for (String field : mandatoryFields) {
             if (!config.stringIsSet(field)) {
                 throw new ConfigurationException(String.format(ERROR_NOT_SET, field));
+            }
+        }
+
+        if (config.stringIsSet(Config.PROXY)) {
+            String proxy = config.getString(Config.PROXY);
+            assert proxy != null;
+            String[] proxyArr = proxy.split(":");
+            if (proxyArr.length != 2 || Integer.parseInt(proxyArr[1]) == 0) {
+                throw new ConfigurationException("Invalid Proxy format.");
             }
         }
     }
