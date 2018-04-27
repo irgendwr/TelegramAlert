@@ -64,4 +64,4 @@ TravisCI builds and uploads the release artifacts automatically.
 
 ## Credits
 
-Thanks to [Alexey Medov](https://vk.com/snikerspro) for his generous donation!
+Thanks to [Alexey Medov](https://vk.com/snikerspro) for his valuable ideas and generous donation!
