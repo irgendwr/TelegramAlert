@@ -2,6 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/release/irgendwr/TelegramAlert.svg)](https://github.com/irgendwr/TelegramAlert/releases)
 [![Build Status](https://travis-ci.org/irgendwr/TelegramAlert.svg?branch=master)](https://travis-ci.org/irgendwr/TelegramAlert)
+[![Graylog Marketplace](https://img.shields.io/badge/Graylog-Marketplace-blue.svg)](https://marketplace.graylog.org/addons/8a67cfdf-8c1c-4d17-87bf-db38e79015f1)
 
 TelegramAlert allows you to send [Graylog](https://www.graylog.org) alert messages to a specified [Telegram](https://telegram.org) chat.
 
@@ -28,7 +29,7 @@ Create a new bot with the [BotFather](https://t.me/BotFather).
 Send the Bot a message and go to `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
 (replace `<BOT_TOKEN>` with the token you got from BotFather) to get your ID, as shown below.
 
-![Chat ID](screenshots/chat_id.png)
+![Chat ID](https://raw.githubusercontent.com/irgendwr/TelegramAlert/master/screenshots/chat_id.png)
 
 ### Step 3
 
@@ -36,8 +37,8 @@ Add a new alert notification in your Graylog-interface and select `Telegram Aler
 
 The message is a template that can be configured as described in the [Graylog Documentation](http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification)
 
-![Add alert notification](screenshots/add_alert_notification.png)
-![Create new Telegram Alert](screenshots/new_telegram_alert.png)
+![Add alert notification](https://raw.githubusercontent.com/irgendwr/TelegramAlert/master/screenshots/add_alert_notification.png)
+![Create new Telegram Alert](https://raw.githubusercontent.com/irgendwr/TelegramAlert/master/screenshots/new_telegram_alert.png)
 
 ## Build
 
