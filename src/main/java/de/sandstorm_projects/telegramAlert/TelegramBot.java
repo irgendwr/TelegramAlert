@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
@@ -67,12 +68,13 @@ class TelegramBot {
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
             if (status != 200) {
-                String error = String.format("API request was unsuccessful (%d)", status);
+                String body = new BasicResponseHandler().handleResponse(response);
+                String error = String.format("API request was unsuccessful (%d): %s", status, body);
                 logger.warning(error);
                 throw new AlarmCallbackException(error);
             }
         } catch (IOException e) {
-            String error = "API request failed.";
+            String error = "API request failed: " + e.getMessage();
             logger.warning(error);
             e.printStackTrace();
             throw new AlarmCallbackException(error);
