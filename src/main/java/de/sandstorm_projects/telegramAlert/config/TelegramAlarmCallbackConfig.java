@@ -44,6 +44,16 @@ public class TelegramAlarmCallbackConfig {
                 "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));
+        Map<String, String> postMode = new HashMap<>(2);
+        postMode.put("url", "URL query string");
+        postMode.put("json", "application/json");
+        configurationRequest.addField(new DropdownField(
+                Config.POST_MODE, "Post Mode", "url", postMode,
+                "See https://core.telegram.org/bots/api#making-requests for more information on requests.",
+                ConfigurationField.Optional.NOT_OPTIONAL
+        ));
+
+
         configurationRequest.addField(new TextField(
                 Config.TOKEN, "Bot Token", "",
                 "HTTP API Token from @BotFather",
@@ -69,6 +79,7 @@ public class TelegramAlarmCallbackConfig {
             Config.MESSAGE,
             Config.CHAT,
             Config.PARSE_MODE,
+            Config.POST_MODE,
             Config.TOKEN,
             Config.GRAYLOG_URL
         };
