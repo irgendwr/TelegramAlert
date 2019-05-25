@@ -1,19 +1,15 @@
 package de.sandstorm_projects.telegramAlert;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -31,14 +27,12 @@ class TelegramBot {
     private String chat;
     private Logger logger;
     private String parseMode;
-    private String postMode;
     private String proxy;
 
     TelegramBot(Configuration config) {
         this.token = config.getString(Config.TOKEN);
         this.chat = config.getString(Config.CHAT);
         this.parseMode = config.getString(Config.PARSE_MODE);
-        this.postMode = config.getString(Config.POST_MODE);
         this.proxy = config.getString(Config.PROXY);
 
         logger = Logger.getLogger("TelegramAlert");
@@ -58,12 +52,18 @@ class TelegramBot {
             client = HttpClients.createDefault();
         }
 
-        try {
-            HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
-            HttpEntity entity =
-                    postMode.equals("url") ? createUrlEncodedFormEntity(msg) : createJsonStringEntity(msg);
+        HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
 
-            request.setEntity(entity);
+        List<NameValuePair> params = new ArrayList<>(4);
+        params.add(new BasicNameValuePair("chat_id", chat));
+        params.add(new BasicNameValuePair("text", msg));
+        params.add(new BasicNameValuePair("disable_web_page_preview", "true"));
+        if (!parseMode.equals("text")) {
+            params.add(new BasicNameValuePair("parse_mode", parseMode));
+        }
+
+        try {
+            request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
@@ -79,29 +79,5 @@ class TelegramBot {
             e.printStackTrace();
             throw new AlarmCallbackException(error);
         }
-    }
-
-    private HttpEntity createUrlEncodedFormEntity(String msg) throws UnsupportedEncodingException {
-        List<NameValuePair> params = new ArrayList<>(4);
-        params.add(new BasicNameValuePair("chat_id", chat));
-        params.add(new BasicNameValuePair("text", msg));
-        params.add(new BasicNameValuePair("disable_web_page_preview", "true"));
-        if (!parseMode.equals("text")) {
-            params.add(new BasicNameValuePair("parse_mode", parseMode));
-        }
-
-        return new UrlEncodedFormEntity(params, "UTF-8");
-    }
-
-    private HttpEntity createJsonStringEntity(String msg) {
-        StringBuilder params = new StringBuilder("{");
-        params.append("\"chat_id\":\"").append(chat).append("\"");
-        params.append(",\"text\":\"").append(msg).append("\"");
-        params.append(",\"disable_web_page_preview\":\"true\"");
-        if (!parseMode.equals("text")) {
-            params.append(",\"parse_mode\":\"").append(parseMode).append("\"");
-        }
-        params.append("}");
-        return new StringEntity(params.toString(), ContentType.APPLICATION_JSON);
     }
 }
