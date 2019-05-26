@@ -1,24 +1,22 @@
 package de.sandstorm_projects.telegramAlert;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
+import de.sandstorm_projects.telegramAlert.config.Config;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
-import org.apache.http.message.BasicNameValuePair;
 import org.graylog2.plugin.alarms.callbacks.AlarmCallbackException;
 import org.graylog2.plugin.configuration.Configuration;
+import org.json.JSONObject;
 
-import de.sandstorm_projects.telegramAlert.config.Config;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 class TelegramBot {
     private static final String API = "https://api.telegram.org/bot%s/%s";
@@ -54,16 +52,8 @@ class TelegramBot {
 
         HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
 
-        List<NameValuePair> params = new ArrayList<>(4);
-        params.add(new BasicNameValuePair("chat_id", chat));
-        params.add(new BasicNameValuePair("text", msg));
-        params.add(new BasicNameValuePair("disable_web_page_preview", "true"));
-        if (!parseMode.equals("text")) {
-            params.add(new BasicNameValuePair("parse_mode", parseMode));
-        }
-
         try {
-            request.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            request.setEntity(createJsonStringEntity(msg));
 
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
@@ -79,5 +69,16 @@ class TelegramBot {
             e.printStackTrace();
             throw new AlarmCallbackException(error);
         }
+    }
+
+    private HttpEntity createJsonStringEntity(String msg) {
+        JSONObject params = new JSONObject();
+        params.put("chat_id", chat);
+        params.put("text", msg);
+        params.put("disable_web_page_preview", "true");
+        if (!parseMode.equals("text")) {
+            params.put("parse_mode", parseMode);
+        }
+        return new StringEntity(params.toString(), ContentType.APPLICATION_JSON);
     }
 }
