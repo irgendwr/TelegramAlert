@@ -25,6 +25,7 @@
         <graylog2.version>2.0.0</graylog2.version>
         <httpclient.version>4.5.5</httpclient.version>
         <json.version>20180813</json.version>
+        <validator.version>1.6</validator.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>${validator.version}</version>
         </dependency>
     </dependencies>
     

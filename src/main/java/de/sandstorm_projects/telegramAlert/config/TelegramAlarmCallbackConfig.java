@@ -1,5 +1,6 @@
 package de.sandstorm_projects.telegramAlert.config;
 
+import org.apache.commons.validator.UrlValidator;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationException;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
@@ -60,11 +61,18 @@ public class TelegramAlarmCallbackConfig {
                 "Proxy address in the following format: <ProxyAddress>:<Port>",
                 ConfigurationField.Optional.OPTIONAL
         ));
+        configurationRequest.addField(new TextField(
+                Config.TELEGRAM_API_URL, "Telegram API url",
+                "https://api.telegram.org/bot${bot_token}/sendMessage",
+                "Telegram API url, override if you are using custom API gateway.",
+                ConfigurationField.Optional.OPTIONAL
+        ));
 
         return configurationRequest;
     }
 
     public static void check(Configuration config) throws ConfigurationException {
+        UrlValidator urlValidator = new UrlValidator(new String[]{"http", "https"});
         String[] mandatoryFields = {
             Config.MESSAGE,
             Config.CHAT,
@@ -79,12 +87,22 @@ public class TelegramAlarmCallbackConfig {
             }
         }
 
+        if (!urlValidator.isValid(Config.GRAYLOG_URL)) {
+            throw new ConfigurationException("Graylog url is invalid.");
+        }
+
         if (config.stringIsSet(Config.PROXY)) {
             String proxy = config.getString(Config.PROXY);
             assert proxy != null;
             String[] proxyArr = proxy.split(":");
             if (proxyArr.length != 2 || Integer.parseInt(proxyArr[1]) == 0) {
                 throw new ConfigurationException("Invalid Proxy format.");
+            }
+        }
+
+        if (config.stringIsSet(Config.TELEGRAM_API_URL)) {
+            if (!urlValidator.isValid(Config.getApiUrl(config))) {
+                throw new ConfigurationException("Telegram API url is invalid.");
             }
         }
     }
