@@ -19,19 +19,17 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 class TelegramBot {
-    private static final String API = "https://api.telegram.org/bot%s/%s";
-
-    private String token;
+    private String apiUrl;
     private String chat;
     private Logger logger;
     private String parseMode;
     private String proxy;
 
     TelegramBot(Configuration config) {
-        this.token = config.getString(Config.TOKEN);
         this.chat = config.getString(Config.CHAT);
         this.parseMode = config.getString(Config.PARSE_MODE);
         this.proxy = config.getString(Config.PROXY);
+        this.apiUrl = Config.getApiUrl(config);
 
         logger = Logger.getLogger("TelegramAlert");
     }
@@ -50,7 +48,7 @@ class TelegramBot {
             client = HttpClients.createDefault();
         }
 
-        HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
+        HttpPost request = new HttpPost(apiUrl);
 
         try {
             request.setEntity(createJsonStringEntity(msg));
