@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 
 import org.graylog2.plugin.Message;
 import org.graylog2.plugin.MessageSummary;
+import org.graylog2.plugin.Tools;
 import org.graylog2.plugin.alarms.AlertCondition;
 import org.graylog2.plugin.alarms.callbacks.*;
 import org.graylog2.plugin.configuration.*;
@@ -18,6 +19,7 @@ import org.graylog2.plugin.streams.Stream;
 
 import de.sandstorm_projects.telegramAlert.config.Config;
 import de.sandstorm_projects.telegramAlert.config.TelegramAlarmCallbackConfig;
+import org.joda.time.DateTime;
 
 public class TelegramAlarmCallback implements AlarmCallback {
     private Configuration config;
@@ -64,7 +66,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
         model.put("alert_condition", result.getTriggeredCondition());
         model.put("backlog", backlog);
         model.put("backlog_size", backlog.size());
-        model.put("stream_url", buildStreamLink(stream));
+        model.put("stream_url", buildStreamLink(result, stream));
 
         return model;
     }
@@ -84,8 +86,18 @@ public class TelegramAlarmCallback implements AlarmCallback {
         return backlog;
     }
 
-    private String buildStreamLink(Stream stream) {
-        return getGraylogURL() + "streams/" + stream.getId() + "/messages?q=%2A&rangetype=relative&relative=3600";
+    private String buildStreamLink(AlertCondition.CheckResult result, Stream stream) {
+        int time = 5;
+        if (result.getTriggeredCondition().getParameters().get("time") != null) {
+            time = (int) result.getTriggeredCondition().getParameters().get("time");
+        }
+
+        DateTime dateAlertEnd = result.getTriggeredAt();
+        DateTime dateAlertStart = dateAlertEnd.minusMinutes(time);
+        String alertStart = Tools.getISO8601String(dateAlertStart);
+        String alertEnd = Tools.getISO8601String(dateAlertEnd);
+
+        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd + "&q=*";
     }
 
     /*private String buildMessageLink(String index, String id) {
