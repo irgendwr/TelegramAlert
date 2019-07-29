@@ -1,5 +1,6 @@
 package de.sandstorm_projects.telegramAlert.config;
 
+import de.sandstorm_projects.telegramAlert.bot.ParseMode;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationException;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
@@ -7,9 +8,6 @@ import org.graylog2.plugin.configuration.fields.ConfigurationField;
 import org.graylog2.plugin.configuration.fields.TextField;
 import org.graylog2.plugin.configuration.fields.TextField.Attribute;
 import org.graylog2.plugin.configuration.fields.DropdownField;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TelegramAlarmCallbackConfig {
     private static final String ERROR_NOT_SET = "%s is mandatory and must not be empty.";
@@ -22,7 +20,7 @@ public class TelegramAlarmCallbackConfig {
                 "[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
                 "```\n" +
                 "${foreach backlog message}\n" +
-                "${message.message}\n\\n" +
+                "${message.message;raw}\n\\n" +
                 "${end}\n" +
                 "```",
                 "See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
@@ -35,12 +33,8 @@ public class TelegramAlarmCallbackConfig {
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));
 
-        Map<String, String> parseMode = new HashMap<>(3);
-        parseMode.put("text", "Text");
-        parseMode.put("Markdown", "Markdown");
-        parseMode.put("HTML", "HTML");
         configurationRequest.addField(new DropdownField(
-                Config.PARSE_MODE, "Parse Mode", "Markdown", parseMode,
+                Config.PARSE_MODE, "Parse Mode", ParseMode.MARKDOWN, ParseMode.OPTIONS,
                 "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));
@@ -56,7 +50,7 @@ public class TelegramAlarmCallbackConfig {
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));
         configurationRequest.addField(new TextField(
-                Config.PROXY, "Proxy", null,
+                Config.PROXY, "Proxy", "",
                 "Proxy address in the following format: <ProxyAddress>:<Port>",
                 ConfigurationField.Optional.OPTIONAL
         ));
