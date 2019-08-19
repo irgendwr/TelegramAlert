@@ -17,12 +17,10 @@ public class TelegramAlarmCallbackConfig {
 
         configurationRequest.addField(new TextField(
                 Config.MESSAGE, "Message",
-                "[${stream.title}](${stream_url}): ${alert_condition.title}\n" +
-                "```\n" +
-                "${foreach backlog message}\n" +
-                "${message.message;raw}\n\\n" +
-                "${end}\n" +
-                "```",
+                "<a href=\"${stream_url}\">${stream.title}</a>: ${alert_condition.title}\n" +
+                "<code>${foreach backlog message}\n" +
+                "${message.message}\n" +
+                "${end}</code>",
                 "See http://docs.graylog.org/en/latest/pages/streams/alerts.html#email-alert-notification for more details.",
                 ConfigurationField.Optional.NOT_OPTIONAL,
                 Attribute.TEXTAREA
@@ -34,7 +32,7 @@ public class TelegramAlarmCallbackConfig {
         ));
 
         configurationRequest.addField(new DropdownField(
-                Config.PARSE_MODE, "Parse Mode", ParseMode.MARKDOWN, ParseMode.OPTIONS,
+                Config.PARSE_MODE, "Parse Mode", ParseMode.HTML, ParseMode.OPTIONS,
                 "See https://core.telegram.org/bots/api#formatting-options for more information on formatting.",
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));

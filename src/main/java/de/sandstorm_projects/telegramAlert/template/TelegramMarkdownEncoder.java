@@ -15,7 +15,6 @@ public class TelegramMarkdownEncoder implements Encoder {
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
 
-            //TODO: test if this is reliable
             switch (c) {
                 case '_':
                     sb.append("\\_");

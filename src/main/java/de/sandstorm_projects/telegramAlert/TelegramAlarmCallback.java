@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 
 import de.sandstorm_projects.telegramAlert.bot.ParseMode;
 import de.sandstorm_projects.telegramAlert.bot.TelegramBot;
+import de.sandstorm_projects.telegramAlert.template.RawBracketsRenderer;
 import de.sandstorm_projects.telegramAlert.template.RawNoopRenderer;
 import de.sandstorm_projects.telegramAlert.template.TelegramHTMLEncoder;
 import de.sandstorm_projects.telegramAlert.template.TelegramMarkdownEncoder;
@@ -35,9 +36,8 @@ public class TelegramAlarmCallback implements AlarmCallback {
     @Inject
     public TelegramAlarmCallback(Engine engine) {
         templateEngine = engine;
-        NamedRenderer rawRenderer = new RawNoopRenderer();
-        templateEngine.registerNamedRenderer(rawRenderer);
-
+        templateEngine.registerNamedRenderer(new RawNoopRenderer());
+        templateEngine.registerNamedRenderer(new RawBracketsRenderer());
     }
 
     @Override
@@ -92,6 +92,12 @@ public class TelegramAlarmCallback implements AlarmCallback {
         model.put("backlog_size", backlog.size());
         model.put("stream_url", buildStreamLink(result, stream));
 
+        List<String> test = new ArrayList<>();
+        test.add("one");
+        test.add("two");
+        test.add("three");
+        model.put("test", test);
+
         return model;
     }
 
@@ -121,7 +127,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
         String alertStart = Tools.getISO8601String(dateAlertStart);
         String alertEnd = Tools.getISO8601String(dateAlertEnd);
 
-        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd + "&q=*";
+        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd;
     }
 
     /*private String buildMessageLink(String index, String id) {

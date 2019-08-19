@@ -8,7 +8,7 @@ TelegramAlert allows you to send [Graylog](https://www.graylog.org) alert messag
 
 ## Requirements
 
-Requires Graylog 2.0 or later. It's recommended to use the [latest Graylog release](https://www.graylog.org/products/latestversion).
+Requires Graylog 2.4 or later. It's recommended to use the [latest Graylog release](https://www.graylog.org/products/latestversion).
 
 ## Installation
 
