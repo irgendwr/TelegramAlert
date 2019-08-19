@@ -1,6 +1,7 @@
 package de.sandstorm_projects.telegramAlert.config;
 
 import de.sandstorm_projects.telegramAlert.bot.ParseMode;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationException;
 import org.graylog2.plugin.configuration.ConfigurationRequest;
@@ -27,7 +28,7 @@ public class TelegramAlarmCallbackConfig {
         ));
 
         configurationRequest.addField(new TextField(
-                Config.CHAT, "Chat ID", "", "",
+                Config.CHAT, "Chat IDs", "", "You can enter multiple, comma-separated chat IDs.",
                 ConfigurationField.Optional.NOT_OPTIONAL
         ));
 
@@ -56,7 +57,7 @@ public class TelegramAlarmCallbackConfig {
         return configurationRequest;
     }
 
-    public static void check(Configuration config) throws ConfigurationException {
+    static void check(Configuration config) throws ConfigurationException {
         String[] mandatoryFields = {
             Config.MESSAGE,
             Config.CHAT,

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.floreysoft.jmte.Engine;
-import com.floreysoft.jmte.NamedRenderer;
 import com.google.inject.Inject;
 
 import de.sandstorm_projects.telegramAlert.bot.ParseMode;
 import de.sandstorm_projects.telegramAlert.bot.TelegramBot;
+import de.sandstorm_projects.telegramAlert.config.TelegramAlarmCallbackConfigValues;
 import de.sandstorm_projects.telegramAlert.template.RawBracketsRenderer;
 import de.sandstorm_projects.telegramAlert.template.RawNoopRenderer;
 import de.sandstorm_projects.telegramAlert.template.TelegramHTMLEncoder;
@@ -24,12 +24,11 @@ import org.graylog2.plugin.alarms.callbacks.*;
 import org.graylog2.plugin.configuration.*;
 import org.graylog2.plugin.streams.Stream;
 
-import de.sandstorm_projects.telegramAlert.config.Config;
 import de.sandstorm_projects.telegramAlert.config.TelegramAlarmCallbackConfig;
 import org.joda.time.DateTime;
 
 public class TelegramAlarmCallback implements AlarmCallback {
-    private Configuration config;
+    private TelegramAlarmCallbackConfigValues config;
     private TelegramBot bot;
     private Engine templateEngine;
     
@@ -41,8 +40,8 @@ public class TelegramAlarmCallback implements AlarmCallback {
     }
 
     @Override
-    public void initialize(Configuration config) throws AlarmCallbackConfigurationException {
-        this.config = config;
+    public void initialize(Configuration c) throws AlarmCallbackConfigurationException {
+        config = new TelegramAlarmCallbackConfigValues(c);
 
         try {
             checkConfiguration();
@@ -50,7 +49,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
             throw new AlarmCallbackConfigurationException("Configuration error: " + e.getMessage());
         }
 
-        ParseMode parseMode = ParseMode.fromString(config.getString(Config.PARSE_MODE));
+        ParseMode parseMode = config.getParseMode();
         switch (parseMode.value()) {
             case ParseMode.MARKDOWN:
                 templateEngine.setEncoder(new TelegramMarkdownEncoder());
@@ -62,22 +61,25 @@ public class TelegramAlarmCallback implements AlarmCallback {
                 templateEngine.setEncoder(null);
         }
         
-        bot = new TelegramBot(config.getString(Config.TOKEN));
-        bot.setProxy(config.getString(Config.PROXY));
-        bot.setChat(config.getString(Config.CHAT));
+        bot = new TelegramBot(config.getToken());
+        bot.setProxy(config.getProxy());
         bot.setParseMode(parseMode);
     }
 
     @Override
     public void call(Stream stream, AlertCondition.CheckResult result) throws AlarmCallbackException {
-        bot.sendMessage(buildMessage(stream, result));
+        String message = buildMessage(stream, result);
+
+        for (String chatID : config.getChatIDs()) {
+            bot.sendMessage(chatID, message);
+        }
     }
     
     private String buildMessage(Stream stream, AlertCondition.CheckResult result) {
         List<Message> backlog = getAlarmBacklog(result);
         Map<String, Object> model = getModel(stream, result, backlog);
         try {
-            return templateEngine.transform(config.getString(Config.MESSAGE), model);
+            return templateEngine.transform(config.getMessage(), model);
         } catch (Exception ex) {
             return ex.toString();
         }
@@ -90,7 +92,8 @@ public class TelegramAlarmCallback implements AlarmCallback {
         model.put("alert_condition", result.getTriggeredCondition());
         model.put("backlog", backlog);
         model.put("backlog_size", backlog.size());
-        model.put("stream_url", buildStreamLink(result, stream));
+        model.put("stream_url", buildStreamURL(result, stream));
+        model.put("graylog_url", config.getGraylogURL());
 
         return model;
     }
@@ -110,7 +113,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
         return backlog;
     }
 
-    private String buildStreamLink(AlertCondition.CheckResult result, Stream stream) {
+    private String buildStreamURL(AlertCondition.CheckResult result, Stream stream) {
         int time = 5;
         if (result.getTriggeredCondition().getParameters().get("time") != null) {
             time = (int) result.getTriggeredCondition().getParameters().get("time");
@@ -121,22 +124,12 @@ public class TelegramAlarmCallback implements AlarmCallback {
         String alertStart = Tools.getISO8601String(dateAlertStart);
         String alertEnd = Tools.getISO8601String(dateAlertEnd);
 
-        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd;
+        return config.getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd;
     }
 
-    /*private String buildMessageLink(String index, String id) {
-        return getGraylogURL() + "messages/" + index + "/" + id;
+    /*private String buildMessageURL(String index, String id) {
+        return config.getGraylogURL() + "messages/" + index + "/" + id;
     }*/
-    
-    private String getGraylogURL() {
-        String url = config.getString(Config.GRAYLOG_URL);
-        
-        if (url != null && !url.endsWith("/")) {
-            url += "/";
-        }
-        
-        return url;
-    }
 
     @Override
     public ConfigurationRequest getRequestedConfiguration() {
@@ -150,11 +143,11 @@ public class TelegramAlarmCallback implements AlarmCallback {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return config.getSource();
+        return config.getConfig().getSource();
     }
 
     @Override
     public void checkConfiguration() throws ConfigurationException {
-        TelegramAlarmCallbackConfig.check(config);
+        config.check();
     }
 }

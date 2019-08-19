@@ -20,7 +20,6 @@ public class TelegramBot {
     private static final String API = "https://api.telegram.org/bot%s/%s";
 
     private String token;
-    private String chat;
     private Logger logger;
     private ParseMode parseMode;
     private String proxy;
@@ -28,10 +27,6 @@ public class TelegramBot {
     public TelegramBot(String token) {
         this.token = token;
         logger = Logger.getLogger("TelegramAlert");
-    }
-
-    public void setChat(String id) {
-        chat = id;
     }
 
     public void setParseMode(ParseMode mode) {
@@ -42,7 +37,7 @@ public class TelegramBot {
         proxy = route;
     }
 
-    public void sendMessage(String msg) throws AlarmCallbackException {
+    public void sendMessage(String chatID, String msg) throws AlarmCallbackException {
         final CloseableHttpClient client;
 
         if (proxy == null || proxy.isEmpty()) {
@@ -59,7 +54,7 @@ public class TelegramBot {
         HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
 
         try {
-            request.setEntity(createJSONEntity(msg));
+            request.setEntity(createJSONEntity(chatID, msg));
 
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
@@ -77,9 +72,9 @@ public class TelegramBot {
         }
     }
 
-    private HttpEntity createJSONEntity(String msg) {
+    private HttpEntity createJSONEntity(String chatID, String msg) {
         JSONObject params = new JSONObject();
-        params.put("chat_id", chat);
+        params.put("chat_id", chatID);
         params.put("text", msg);
         params.put("disable_web_page_preview", "true");
         if (!parseMode.equals(ParseMode.text())) {
