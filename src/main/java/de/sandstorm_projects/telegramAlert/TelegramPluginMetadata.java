@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.Set;
 
 public class TelegramPluginMetadata implements PluginMetaData {
+    private static final String PLUGIN_PROPERTIES = "de.sandstorm_projects.telegramAlert/graylog-plugin.properties";
+
     @Override
     public String getUniqueId() {
         return TelegramPlugin.class.getPackage().getName();
@@ -21,7 +23,7 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public String getAuthor() {
-        return "Jonas Bögle";
+        return "Jonas Bögle @irgendwr";
     }
 
     @Override
@@ -31,7 +33,7 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public Version getVersion() {
-        return new Version(2, 1, 1);
+        return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "version", Version.from(0, 0, 0, "unknown"));
     }
 
     @Override
@@ -41,7 +43,8 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public Version getRequiredVersion() {
-        return new Version(2, 0, 0);
+        return Version.from(2, 4, 0);
+        //return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "graylog.version", Version.from(2, 4, 0, "unknown"));
     }
 
     @Override

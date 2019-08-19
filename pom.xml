@@ -10,6 +10,12 @@
     <name>TelegramAlert</name>
     <description>Allows you to send alert messages to a specified Telegram chat.</description>
     <url>https://irgendwr.github.io/TelegramAlert/</url>
+
+    <developers>
+        <developer>
+            <name>Jonas Bögle</name>
+        </developer>
+    </developers>
     
     <scm>
         <connection>scm:git:https://github.com/irgendwr/TelegramAlert.git</connection>
@@ -22,9 +28,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <graylog2.version>2.0.0</graylog2.version>
-        <httpclient.version>4.5.5</httpclient.version>
-        <json.version>20180813</json.version>
+
+        <!-- Skip unnecessary build steps -->
+        <maven.source.skip>true</maven.source.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.site.skip>true</maven.site.skip>
+
+        <graylog2.version>3.1.0</graylog2.version>
+        <httpclient.version>4.5.9</httpclient.version>
+        <json.version>20190722</json.version>
     </properties>
 
     <dependencies>
@@ -34,6 +48,13 @@
             <version>${graylog2.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value</artifactId>
+            <version>${auto-value.version}</version>
+            <scope>provided</scope>
+        </dependency>-->
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -47,11 +68,38 @@
     </dependencies>
     
     <build>
+        <resources>
+            <resource><directory>build</directory></resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <skipAssembly>true</skipAssembly>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Graylog-Plugin-Properties-Path>${project.groupId}.${project.artifactId}</Graylog-Plugin-Properties-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <minimizeJar>false</minimizeJar>
                 </configuration>

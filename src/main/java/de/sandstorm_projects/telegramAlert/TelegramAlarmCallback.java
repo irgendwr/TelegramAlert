@@ -7,8 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.floreysoft.jmte.Engine;
+import com.floreysoft.jmte.NamedRenderer;
 import com.google.inject.Inject;
 
+import de.sandstorm_projects.telegramAlert.bot.ParseMode;
+import de.sandstorm_projects.telegramAlert.bot.TelegramBot;
+import de.sandstorm_projects.telegramAlert.template.RawBracketsRenderer;
+import de.sandstorm_projects.telegramAlert.template.RawNoopRenderer;
+import de.sandstorm_projects.telegramAlert.template.TelegramHTMLEncoder;
+import de.sandstorm_projects.telegramAlert.template.TelegramMarkdownEncoder;
 import org.graylog2.plugin.Message;
 import org.graylog2.plugin.MessageSummary;
 import org.graylog2.plugin.Tools;
@@ -27,8 +34,10 @@ public class TelegramAlarmCallback implements AlarmCallback {
     private Engine templateEngine;
     
     @Inject
-    public TelegramAlarmCallback(Engine templateEngine) {
-        this.templateEngine = templateEngine;
+    public TelegramAlarmCallback(Engine engine) {
+        templateEngine = engine;
+        templateEngine.registerNamedRenderer(new RawNoopRenderer());
+        templateEngine.registerNamedRenderer(new RawBracketsRenderer());
     }
 
     @Override
@@ -40,8 +49,23 @@ public class TelegramAlarmCallback implements AlarmCallback {
         } catch (ConfigurationException e) {
             throw new AlarmCallbackConfigurationException("Configuration error: " + e.getMessage());
         }
+
+        ParseMode parseMode = ParseMode.fromString(config.getString(Config.PARSE_MODE));
+        switch (parseMode.value()) {
+            case ParseMode.MARKDOWN:
+                templateEngine.setEncoder(new TelegramMarkdownEncoder());
+                break;
+            case ParseMode.HTML:
+                templateEngine.setEncoder(new TelegramHTMLEncoder());
+                break;
+            default:
+                templateEngine.setEncoder(null);
+        }
         
-        bot = new TelegramBot(config);
+        bot = new TelegramBot(config.getString(Config.TOKEN));
+        bot.setProxy(config.getString(Config.PROXY));
+        bot.setChat(config.getString(Config.CHAT));
+        bot.setParseMode(parseMode);
     }
 
     @Override
@@ -97,7 +121,7 @@ public class TelegramAlarmCallback implements AlarmCallback {
         String alertStart = Tools.getISO8601String(dateAlertStart);
         String alertEnd = Tools.getISO8601String(dateAlertEnd);
 
-        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd + "&q=*";
+        return getGraylogURL() + "streams/" + stream.getId() + "/messages?rangetype=absolute&from=" + alertStart + "&to=" + alertEnd;
     }
 
     /*private String buildMessageLink(String index, String id) {
