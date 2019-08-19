@@ -1,6 +1,5 @@
 language: java
-jdk:
-- openjdk8
+jdk: openjdk8
 
 sudo: false
 cache:
@@ -14,10 +13,10 @@ deploy:
   provider: releases
   api_key:
     secure: XNdHJ0YhiqWsR6+MoldKgxpseQQMFkbSGAbYWicARiaUnDqoaRCCPHboxDdfzx2EDKBOs3LiVA4eRafrg7ymzPV5xx7nEaB6kla2MxM8oJoIOMdMiiXgt2XSCpMsMllFykJpECc6IPr1Hqmt3Inh1e0BFcYRqM+u/05CgydcvnnLoxlP47EPmct0pBORrwRXKGqMegNwpygWfxJB2iSIGFUHW8UR40vWswVEOS1fcGfn5aAD2qPjnF9VQr170y0Eo3AVFGvpS1Dj5z0t5LxCEF0CPLs12vqhSSu4Y+G3/UwR+wwLBv9DX0A6JLA0xBCxbCwcrbhnH+hB5F1W35HkxGrepo6ZBYQdUPZw/qCuklQ7KAJMKULuK8pFV6AxThDZE8lNLduSbKsKIPutNUAHWvLYxLC+5G6lWAOvp6l81ORBjGFOPk6oErAsyIYVWrsF5f1nW6wnhnLpyHQjvwCeW9JhUtPt9eUkKaaiPbVDqqIieeCNJfIStmesxyvZTr/jmZTrZW+g2u5FARY6SFSjX39mafPCXGYbfrpqp39tdM4lnWkdEiSDRBtKh3TrXwDEgqlBM5UWUmFY1QSOAE/NHHhDXIUtM/v4FILYLDsA0UzvEdzKWtIRiiqrdUaw6LiPGQ4LVeYtqNM3igEKm6McJJ/QPBatA7/iCy+iFM/1JTs=
-  file:
-    - "target/*.jar"
+  file_glob: true
+  file: target/*.jar
   skip_cleanup: true
   on:
     tags: true
-    jdk: openjdk8
+    #jdk: openjdk8
     repo: irgendwr/TelegramAlert
