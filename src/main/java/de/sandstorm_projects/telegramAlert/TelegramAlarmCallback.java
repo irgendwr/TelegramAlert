@@ -92,12 +92,6 @@ public class TelegramAlarmCallback implements AlarmCallback {
         model.put("backlog_size", backlog.size());
         model.put("stream_url", buildStreamLink(result, stream));
 
-        List<String> test = new ArrayList<>();
-        test.add("one");
-        test.add("two");
-        test.add("three");
-        model.put("test", test);
-
         return model;
     }
 
