@@ -55,4 +55,8 @@ public class TelegramAlarmCallbackConfigValues {
     public String getProxy() {
         return config.getString(Config.PROXY);
     }
+
+    public String getProxyUser() { return config.getString(Config.PROXY_USER); }
+
+    public String getProxyPassword() { return config.getString(Config.PROXY_PASSWORD); }
 }

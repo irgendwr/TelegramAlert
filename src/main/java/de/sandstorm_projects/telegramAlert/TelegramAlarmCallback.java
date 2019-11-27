@@ -63,6 +63,8 @@ public class TelegramAlarmCallback implements AlarmCallback {
         
         bot = new TelegramBot(config.getToken());
         bot.setProxy(config.getProxy());
+        bot.setProxyUser(config.getProxyUser());
+        bot.setProxyPassword(config.getProxyPassword());
         bot.setParseMode(parseMode);
     }
 

@@ -7,4 +7,6 @@ public class Config {
     public static final String TOKEN = "telegram_token";
     public static final String GRAYLOG_URL = "graylog_url";
     public static final String PROXY = "proxy";
+    public static final String PROXY_USER = "proxy_user" ;
+    public static final String PROXY_PASSWORD = "proxy_password";
 }
