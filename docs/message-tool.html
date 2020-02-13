@@ -1,0 +1,118 @@
+---
+layout: default
+title: Telegram Bot - Message Tool
+description: This tool allows you to view the received messages of a previously created Telegram bot.
+permalink: /message-tool
+---
+
+<ol>
+    <li>
+        Enter your bot token from <a href="https://t.me/BotFather" rel="noopener">BotFather</a>:<br/>
+        <input type="text" id="token" placeholder="" size="45" pattern="\d{9}:\S{35}">
+    </li>
+    <li>Send the bot a message in the desired chat.</li>
+    <li>Click <input type="button" value="refresh" id="refresh"/> to show all received messages with their Channel IDs.</li>
+</ol>
+
+<h3 id="messages">Received Messages</h3>
+<p>Status: <span id="status">Unknown</span></p>
+<div id="messagelist">
+    Please click the refresh button above.
+</div>
+
+<style>
+.message {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  margin-top: 20px;
+  padding: 2px 16px;
+}
+
+.message:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#messagelist {
+    min-height: 500px;
+}
+</style>
+
+<script>
+document.getElementById("refresh").onclick = function() {
+    let token = document.getElementById("token").value;
+    let status = document.getElementById("status");
+    status.textContent = "Loading...";
+    let msgList = document.getElementById("messagelist");
+    msgList.innerHTML = "";
+    
+    // fetch messages
+    fetch(`https://api.telegram.org/bot${token}/getUpdates`)
+    .then(response => {
+        // decode JSON
+        return response.json();
+    })
+    .then(data => {
+        // check for API errors
+        if (!data.ok) {
+            switch (data.error_code) {
+                case 401:
+                case 404: throw "Invalid Bot Token!"; break;
+                default: throw `${data.error_code} (${data.description})`;
+            }
+            return;
+        }
+
+        console.log("Data:");
+        console.log(data);
+
+        status.textContent = 'Success';
+        data.result.forEach(entry => {
+            let message = entry.message || entry.channel_post;
+            if (message.text) {
+                msgList.append(createMessage(message));
+            }
+        });
+    })
+    .catch(err => {
+        console.log("Error:");
+        console.log(err);
+
+        status.textContent = `Error: ${err}`;
+    });
+};
+
+function createMessage(message) {
+    let msg = document.createElement("div");
+    msg.className = "message";
+
+    msg.innerHTML += "<h4>Message</h4>";
+    let msgText = document.createElement("p");
+    msgText.textContent = message.text;
+    msg.append(msgText);
+
+    let chat = message.chat;
+    msg.innerHTML += "<h4>Chat</h4>";
+    let chatText = document.createElement("p");
+    chatText.append(`ID: ${chat.id}`);
+    if (chat.title) {
+        chatText.innerHTML += "<br>";
+        chatText.append(`Title: ${chat.title}`);
+    }
+    chatText.innerHTML += "<br>";
+    chatText.append(`Type: ${chat.type}`);
+    msg.append(chatText);
+
+    let from = message.from;
+    if (from) {
+        msg.innerHTML += "<h4>User</h4>";
+        let userText = document.createElement("p");
+        userText.append(`ID: ${message.from.id}`);
+        userText.innerHTML += "<br>";
+        userText.append(`Name: ${from.first_name||''} ${from.last_name||''} ${from.username ? `(@${from.username})` : ''}`);
+        msg.append(userText);
+    }
+
+    return msg;
+}
+</script>
