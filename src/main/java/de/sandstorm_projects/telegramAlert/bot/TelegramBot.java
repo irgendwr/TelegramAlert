@@ -3,9 +3,13 @@ package de.sandstorm_projects.telegramAlert.bot;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -23,6 +27,8 @@ public class TelegramBot {
     private Logger logger;
     private ParseMode parseMode;
     private String proxy;
+    private String proxy_user;
+    private String proxy_password;
 
     public TelegramBot(String token) {
         this.token = token;
@@ -37,17 +43,37 @@ public class TelegramBot {
         proxy = route;
     }
 
+    public void setProxyUser(String user) {
+        proxy_user = user;
+    }
+
+    public void setProxyPassword(String pass) {
+        proxy_password = pass;
+    }
+
     public void sendMessage(String chatID, String msg) throws AlarmCallbackException {
         final CloseableHttpClient client;
 
         if (proxy == null || proxy.isEmpty()) {
             client = HttpClients.createDefault();
-        } else {
+        } else if ((proxy_user == null || proxy_user.isEmpty()) || (proxy_password == null || proxy_password.isEmpty())) {
             String[] proxyArr = proxy.split(":");
             HttpHost proxy = new HttpHost(proxyArr[0], Integer.parseInt(proxyArr[1]));
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
             client = HttpClients.custom()
                     .setRoutePlanner(routePlanner)
+                    .build();
+        } else {
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(
+                    new AuthScope(AuthScope.ANY),
+                    new UsernamePasswordCredentials(proxy_user, proxy_password));
+            String[] proxyArr = proxy.split(":");
+            HttpHost proxy = new HttpHost(proxyArr[0], Integer.parseInt(proxyArr[1]));
+            DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+            client = HttpClients.custom()
+                    .setRoutePlanner(routePlanner)
+                    .setDefaultCredentialsProvider(credsProvider)
                     .build();
         }
 

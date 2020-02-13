@@ -50,8 +50,19 @@ public class TelegramAlarmCallbackConfig {
         ));
         configurationRequest.addField(new TextField(
                 Config.PROXY, "Proxy", "",
-                "Proxy address in the following format: <ProxyAddress>:<Port>",
+                "Http proxy address in the following format: <ProxyAddress>:<Port>",
                 ConfigurationField.Optional.OPTIONAL
+        ));
+        configurationRequest.addField(new TextField(
+                Config.PROXY_USER, "Proxy user", "",
+                "Proxy user",
+                ConfigurationField.Optional.OPTIONAL
+        ));
+        configurationRequest.addField(new TextField(
+                Config.PROXY_PASSWORD, "Proxy password", "",
+                "Proxy password",
+                ConfigurationField.Optional.OPTIONAL,
+                Attribute.IS_PASSWORD
         ));
 
         return configurationRequest;
