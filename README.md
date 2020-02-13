@@ -14,7 +14,7 @@ Requires Graylog 2.4 or later. It's recommended to use the [latest Graylog relea
 ## Installation
 
 1. Download the [latest TelegramAlert release](https://github.com/irgendwr/TelegramAlert/releases/latest)
-and place the `telegram-alert-x.x.x.jar` file in your plugins folder that is configured in your `graylog.conf`
+and place the `telegram-alert-x.x.x.jar` file in your `plugin_dir` that is configured in your `graylog.conf`
 as described in the [Graylog documentation](http://docs.graylog.org/en/latest/pages/plugins.html#installing-and-loading-plugins).
 
 2. Restart your graylog-server, i.e. `service graylog-server restart`.
@@ -76,5 +76,5 @@ TravisCI builds and uploads the release artifacts automatically.
 Thanks to:
 
 - Alexey Medov (@kakogoxepa) - *for his valuable ideas and generous donation!*
-- Everyone that [gave this repo a star](https://github.com/irgendwr/TelegramAlert/stargazers) :star: - *you keep me motivated* :slightly_smiling_face: 
+- Everyone that [starred this repository](https://github.com/irgendwr/TelegramAlert/stargazers) ⭐️ - *you keep me motivated* 🙂
 - [Contributors](https://github.com/irgendwr/TelegramAlert/graphs/contributors) that submitted useful [pull-requests](https://github.com/irgendwr/TelegramAlert/pulls?utf8=%E2%9C%93&q=is%3Apr+is%3Aclosed+is%3Amerged) or opened good issues with suggestions or a detailed bug report.

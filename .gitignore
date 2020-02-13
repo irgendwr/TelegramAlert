@@ -9,4 +9,5 @@ out/
 /.project
 /release.properties
 /dependency-reduced-pom.xml
+.factorypath
 .vscode
