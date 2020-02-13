@@ -8,10 +8,13 @@ permalink: /message-tool
 
 <ol>
     <li>
-        Enter your bot token from <a href="https://t.me/BotFather" rel="noopener">BotFather</a>:<br/>
+        Enter your bot token from <a href="https://t.me/BotFather" rel="noopener">BotFather</a>:<br>
         <input type="text" id="token" placeholder="" size="45" pattern="\d{9}:\S{35}">
     </li>
-    <li>Send the bot a message in the desired chat.</li>
+    <li>
+        Send the bot a message in the desired chat.<br>
+        <i>Note: You may need to disable <a href="https://core.telegram.org/bots#privacy-mode" rel="noopener">privacy mode</a> to see all group messages.</i>
+    </li>
     <li>Click <input type="button" value="refresh" id="refresh"/> to show all received messages with their Channel IDs.</li>
 </ol>
 
@@ -88,9 +91,11 @@ function createMessage(message) {
     msg.className = "message";
 
     msg.innerHTML += "<h4>Message</h4>";
-    let msgText = document.createElement("p");
-    msgText.textContent = message.text;
-    msg.append(msgText);
+    if (message.text) {
+        let msgText = document.createElement("p");
+        msgText.textContent = message.text;
+        msg.append(msgText);
+    }
 
     let chat = message.chat;
     msg.innerHTML += "<h4>Chat</h4>";

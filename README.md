@@ -23,18 +23,17 @@ as described in the [Graylog documentation](http://docs.graylog.org/en/latest/pa
 
 ## Usage
 
-### Step 1 - Create bot
+### Step 1 - Create Bot
 
-Create a new Telegram bot with the [BotFather](https://t.me/BotFather).
+Create a new Telegram bot with the [BotFather](https://t.me/BotFather) and copy the bot token.
 
-### Step 2 - Get channel ID
+### Step 2 - Get Channel ID
 
-Send the Bot a message and go to `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates`
-(replace `<BOT_TOKEN>` with the token you got from BotFather) to get your ID, as shown below.
+Use the [Message Tool](https://irgendwr.github.io/TelegramAlert/message-tool) to find the **Chat ID** of the desired chat.
 
-![Chat ID](https://raw.githubusercontent.com/irgendwr/TelegramAlert/master/screenshots/chat_id.png)
+You can use a private chat, add the bot to a group-chat or to a channel. Just make sure to copy the correct Channel ID.
 
-### Step 3 - Add alert notification
+### Step 3 - Add Alert Notification
 
 Add a new alert notification in your Graylog-interface and select `Telegram Alert` as the notification type.
 
