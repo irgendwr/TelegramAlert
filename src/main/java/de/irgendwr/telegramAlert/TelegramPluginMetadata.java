@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert;
+package de.irgendwr.telegramAlert;
 
 import org.graylog2.plugin.PluginMetaData;
 import org.graylog2.plugin.ServerStatus;
@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Set;
 
 public class TelegramPluginMetadata implements PluginMetaData {
-    private static final String PLUGIN_PROPERTIES = "de.sandstorm_projects.telegramAlert/graylog-plugin.properties";
+    private static final String PLUGIN_PROPERTIES = "de.irgendwr.telegramAlert/graylog-plugin.properties";
 
     @Override
     public String getUniqueId() {
@@ -43,8 +43,7 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public Version getRequiredVersion() {
-        return Version.from(2, 4, 0);
-        //return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "graylog.version", Version.from(2, 4, 0, "unknown"));
+        return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "graylog.version", Version.from(3, 0, 0, "unknown"));
     }
 
     @Override

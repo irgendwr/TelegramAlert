@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert;
+package de.irgendwr.telegramAlert;
 
 import org.graylog2.plugin.Plugin;
 import org.graylog2.plugin.PluginMetaData;

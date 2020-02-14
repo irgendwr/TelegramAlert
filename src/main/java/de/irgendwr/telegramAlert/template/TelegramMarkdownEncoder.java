@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert.template;
+package de.irgendwr.telegramAlert.template;
 
 
 import com.floreysoft.jmte.encoder.Encoder;

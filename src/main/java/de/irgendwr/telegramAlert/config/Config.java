@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert.config;
+package de.irgendwr.telegramAlert.config;
 
 public class Config {
     public static final String MESSAGE = "message_template";

@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert;
+package de.irgendwr.telegramAlert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,13 +9,13 @@ import java.util.Map;
 import com.floreysoft.jmte.Engine;
 import com.google.inject.Inject;
 
-import de.sandstorm_projects.telegramAlert.bot.ParseMode;
-import de.sandstorm_projects.telegramAlert.bot.TelegramBot;
-import de.sandstorm_projects.telegramAlert.config.TelegramAlarmCallbackConfigValues;
-import de.sandstorm_projects.telegramAlert.template.RawBracketsRenderer;
-import de.sandstorm_projects.telegramAlert.template.RawNoopRenderer;
-import de.sandstorm_projects.telegramAlert.template.TelegramHTMLEncoder;
-import de.sandstorm_projects.telegramAlert.template.TelegramMarkdownEncoder;
+import de.irgendwr.telegramAlert.bot.ParseMode;
+import de.irgendwr.telegramAlert.bot.TelegramBot;
+import de.irgendwr.telegramAlert.config.TelegramAlarmCallbackConfigValues;
+import de.irgendwr.telegramAlert.template.RawBracketsRenderer;
+import de.irgendwr.telegramAlert.template.RawNoopRenderer;
+import de.irgendwr.telegramAlert.template.TelegramHTMLEncoder;
+import de.irgendwr.telegramAlert.template.TelegramMarkdownEncoder;
 import org.graylog2.plugin.Message;
 import org.graylog2.plugin.MessageSummary;
 import org.graylog2.plugin.Tools;
@@ -24,7 +24,7 @@ import org.graylog2.plugin.alarms.callbacks.*;
 import org.graylog2.plugin.configuration.*;
 import org.graylog2.plugin.streams.Stream;
 
-import de.sandstorm_projects.telegramAlert.config.TelegramAlarmCallbackConfig;
+import de.irgendwr.telegramAlert.config.TelegramAlarmCallbackConfig;
 import org.joda.time.DateTime;
 
 public class TelegramAlarmCallback implements AlarmCallback {

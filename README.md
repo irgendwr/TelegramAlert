@@ -50,12 +50,23 @@ You may need to remove and re-create your Telegram Alert Notifications.
 
 ## Build
 
+Before building, make sure that you have cloned the required graylog-server version in `../graylog2-server`:
+
+```bash
+export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="properties"]/*[local-name()="graylog.version"]/text()' pom.xml)
+echo "Checking out Graylog ${GRAYLOG_VERSION}"
+git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
+pushd ../graylog2-server
+mvn generate-resources -pl graylog2-server -B -V
+popd
+```
+
 This project is using [Maven](https://maven.apache.org) and requires Java 8 or higher.
 
 You can build the plugin using the following command:
 
 ```bash
-mvn package
+mvn clean package
 ```
 
 The plugin file `telegram-alert-x.x.x.jar` will be saved in the `target` directory

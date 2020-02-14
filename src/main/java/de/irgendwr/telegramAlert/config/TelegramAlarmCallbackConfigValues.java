@@ -1,6 +1,6 @@
-package de.sandstorm_projects.telegramAlert.config;
+package de.irgendwr.telegramAlert.config;
 
-import de.sandstorm_projects.telegramAlert.bot.ParseMode;
+import de.irgendwr.telegramAlert.bot.ParseMode;
 import org.graylog2.plugin.configuration.Configuration;
 import org.graylog2.plugin.configuration.ConfigurationException;
 

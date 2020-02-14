@@ -1,0 +1,25 @@
+{
+  "name": "TelegramAlert",
+  "version": "3.1.0",
+  "description": "Allows to send notifications to Telegram",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irgendwr/TelegramAlert"
+  },
+  "scripts": {
+    "build": "webpack --bail"
+  },
+  "keywords": [
+    "graylog"
+  ],
+  "author": "Jonas Bögle",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin"
+  },
+  "resolutions": {
+    "upath": "1.1.2"
+  }
+}

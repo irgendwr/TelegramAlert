@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert.bot;
+package de.irgendwr.telegramAlert.bot;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
