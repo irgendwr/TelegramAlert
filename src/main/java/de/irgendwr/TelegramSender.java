@@ -14,6 +14,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
@@ -83,12 +84,22 @@ public class TelegramSender {
         try {
             HttpResponse response = client.execute(request);
             int status = response.getStatusLine().getStatusCode();
-            if (status != 200) {
-                String body = new BasicResponseHandler().handleResponse(response);
-                throw new TelegramSenderException(String.format("API request was unsuccessful (%d): %s", status, body), false);
+            HttpEntity entity = response.getEntity();
+            String body;
+            switch (status) {
+                case 200:
+                    break;
+                case 401:
+                    throw new TelegramSenderException("API request was unsuccessful (401 Unauthorized). Either your Bot Token or Proxy Credentials are invalid.", true);
+                case 400:
+                    body = EntityUtils.toString(entity, "UTF-8");
+                    throw new TelegramSenderException(String.format("API request was unsuccessful (400 Bad Request). This can caused by a syntax error in the Message Template or an invalid Chat ID. %s", body), false);
+                default:
+                    body = EntityUtils.toString(entity, "UTF-8");
+                    throw new TelegramSenderException(String.format("API request was unsuccessful (%d): %s", status, body), false);
             }
         } catch (IOException e) {
-            throw new TelegramSenderException("API request failed", e, false);
+            throw new TelegramSenderException("API request failed: " + e.getMessage(), e, false);
         }
     }
 

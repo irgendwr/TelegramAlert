@@ -99,7 +99,11 @@ public class TelegramEventNotification implements EventNotification {
                 bot.sendMessage(chatID, message);
             }
         } catch (TelegramSender.TelegramSenderException e) {
-            errorNotification(e);
+            String exceptionDetail = e.getMessage();
+            if (e.getCause() != null) {
+                exceptionDetail += " (" + e.getCause() + ")";
+            }
+            errorNotification(exceptionDetail);
 
             if (e.isPermanent()) {
                 throw new PermanentEventNotificationException("Failed to send Telegram messages. " + e.getMessage());
@@ -108,7 +112,11 @@ public class TelegramEventNotification implements EventNotification {
             }
 
         } catch (Exception e) {
-            errorNotification(e);
+            String exceptionDetail = e.toString();
+            if (e.getCause() != null) {
+                exceptionDetail += " (" + e.getCause() + ")";
+            }
+            errorNotification(exceptionDetail);
 
             throw new PermanentEventNotificationException("Failed to send Telegram messages. " + e.getMessage());
         }
@@ -175,17 +183,16 @@ public class TelegramEventNotification implements EventNotification {
                 .build();
     }
 
-    private void errorNotification(Exception e) {
-        String exceptionDetail = e.toString();
-        if (e.getCause() != null) {
-            exceptionDetail += " (" + e.getCause() + ")";
-        }
+    private void errorNotification(String error) {
+        LOG.warn(error);
 
         final Notification systemNotification = notificationService.buildNow()
                 .addNode(nodeId.toString())
                 .addType(Notification.Type.GENERIC)
                 .addSeverity(Notification.Severity.NORMAL)
-                .addDetail("exception", exceptionDetail);
+                .addDetail("title", "Failed to send Telegram messages.")
+                .addDetail("description", error)
+                .addDetail("exception", error);
         notificationService.publishIfFirst(systemNotification);
     }
 }
