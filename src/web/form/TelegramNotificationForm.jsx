@@ -11,7 +11,6 @@ import FormsUtils from 'util/FormsUtils';
 const DEFAULT_MESSAGE_TEMPLATE = `<b>\${event.message}</b>\${if event.timerange_start}
 Timerange: \${event.timerange_start} to \${event.timerange_end}\${end}
 Streams:\${foreach streams stream} <a href='\${stream.url}'>\${stream.title}</a>\${end}
-
 \${if backlog}<code>\${foreach backlog message}
 \${message.message}
 \${end}</code>\${else}<i>- no backlog -</i>
