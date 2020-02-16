@@ -23,10 +23,10 @@ class TelegramNotificationSummary extends React.Component {
             <td>Bot Token</td>
             <td>{notification.config.bot_token}</td>
           </tr>*/}
-          {/*<tr> // TODO: remove?
+          <tr>
             <td>Graylog URL</td>
             <td>{notification.config.graylog_url}</td>
-          </tr>*/}
+          </tr>
           <tr>
             <td>Recipients (Chat IDs)</td>
             <td>{notification.config.chats}</td>
@@ -35,22 +35,18 @@ class TelegramNotificationSummary extends React.Component {
             <td>Message</td>
             <td>{notification.config.message_template}</td>
           </tr>
-          {/*<tr> // TODO: remove?
-            <td>Parse Mode</td>
-            <td>{notification.config.parse_mode}</td>
-          </tr>*/}
-          {/*<tr>
+          { notification.config.proxy_address ? <tr>
             <td>HTTP Proxy Address</td>
             <td>{notification.config.proxy_address}</td>
-          </tr>
-          <tr>
+          </tr> : null}
+          { notification.config.proxy_user ? <tr>
             <td>Proxy User</td>
             <td>{notification.config.proxy_user}</td>
-          </tr>
-          <tr>
+          </tr> : null}
+          { notification.config.proxy_password ? <tr>
             <td>Proxy Password</td>
-            <td>{notification.config.proxy_password}</td>
-          </tr>*/}
+            <td><small className="text-muted">(hidden)</small></td>
+          </tr> : null}
         </React.Fragment>
       </CommonNotificationSummary>
     );
