@@ -1,4 +1,4 @@
-package de.sandstorm_projects.telegramAlert;
+package de.irgendwr;
 
 import org.graylog2.plugin.PluginMetaData;
 import org.graylog2.plugin.ServerStatus;
@@ -8,27 +8,30 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Set;
 
-public class TelegramPluginMetadata implements PluginMetaData {
-    private static final String PLUGIN_PROPERTIES = "de.sandstorm_projects.telegramAlert/graylog-plugin.properties";
+/**
+ * Implement the PluginMetaData interface here.
+ */
+public class TelegramNotificationMetaData implements PluginMetaData {
+    private static final String PLUGIN_PROPERTIES = "de.irgendwr.graylog-plugin-telegram-notification/graylog-plugin.properties";
 
     @Override
     public String getUniqueId() {
-        return TelegramPlugin.class.getPackage().getName();
+        return "de.irgendwr.TelegramNotificationPlugin";
     }
 
     @Override
     public String getName() {
-        return "Telegram Alert";
+        return "TelegramNotification";
     }
 
     @Override
     public String getAuthor() {
-        return "Jonas Bögle @irgendwr";
+        return "Jonas Bögle <graylog@jonas.boegle.me>";
     }
 
     @Override
     public URI getURL() {
-        return URI.create("https://irgendwr.github.io/TelegramAlert/");
+        return URI.create("https://github.com/TelegramAlert");
     }
 
     @Override
@@ -43,8 +46,7 @@ public class TelegramPluginMetadata implements PluginMetaData {
 
     @Override
     public Version getRequiredVersion() {
-        return Version.from(2, 4, 0);
-        //return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "graylog.version", Version.from(2, 4, 0, "unknown"));
+        return Version.fromPluginProperties(getClass(), PLUGIN_PROPERTIES, "graylog.version", Version.from(0, 0, 0, "unknown"));
     }
 
     @Override

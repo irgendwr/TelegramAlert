@@ -1,0 +1,24 @@
+{
+  "name": "TelegramNotification",
+  "version": "2.3.0",
+  "description": "Allows you to send alert messages to a specified Telegram chat.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irgendwr/TelegramAlert"
+  },
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint -c .eslintrc src/**/*",
+    "test": "jest"
+  },
+  "keywords": [
+    "graylog"
+  ],
+  "author": "Jonas Bögle <graylog@jonas.boegle.me>",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin"
+  }
+}
