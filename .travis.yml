@@ -10,7 +10,7 @@ addons:
       - rpm
 before_install:
   # Get Graylog version from Maven POM (property: "graylog.version")
-  - export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="properties"]/*[local-name()="graylog.version"]/text()' pom.xml)
+  - export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="parent"]/*[local-name()="version"]/text()' pom.xml)
   # Checkout desired Graylog version
   - echo "Checking out Graylog ${GRAYLOG_VERSION}"
   - git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
