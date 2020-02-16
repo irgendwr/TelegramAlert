@@ -12,5 +12,6 @@ node_modules
 node
 build
 build.config.js.sample
+release.properties
 
 .vscode/settings.json
