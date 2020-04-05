@@ -14,5 +14,5 @@ build
 build.config.js.sample
 release.properties
 
-.vscode/settings.json
+.vscode
 pom.xml.releaseBackup
