@@ -16,8 +16,7 @@
   ],
   "author": "Jonas Bögle <graylog@jonas.boegle.me>",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin"
   }
