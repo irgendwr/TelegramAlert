@@ -7,6 +7,7 @@
 .project
 .settings/
 target/
+cache/
 dependency-reduced-pom.xml
 node_modules
 node
@@ -16,3 +17,4 @@ release.properties
 
 .vscode
 pom.xml.releaseBackup
+yarn-error.log
