@@ -59,7 +59,7 @@ public abstract class TelegramEventNotificationConfig implements EventNotificati
     @JsonProperty(FIELD_PROXY_PASSWORD)
     public abstract String proxyPassword();
 
-    @JsonIgnore
+    @Override @JsonIgnore
     public JobTriggerData toJobTriggerData(EventDto dto) {
         return EventNotificationExecutionJob.Data.builder().eventDto(dto).build();
     }
@@ -68,7 +68,7 @@ public abstract class TelegramEventNotificationConfig implements EventNotificati
         return Builder.create();
     }
 
-    @JsonIgnore
+    @Override @JsonIgnore
     public ValidationResult validate() {
         final ValidationResult validation = new ValidationResult();
 
