@@ -91,13 +91,13 @@
             <scope>provided</scope>
         </dependency>
         <!-- Include source from test-jar to reuse test classes. -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.graylog2</groupId>
             <artifactId>graylog2-server</artifactId>
             <version>${graylog.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
