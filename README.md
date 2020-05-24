@@ -49,35 +49,9 @@ You may need to remove and re-create your Telegram Notifications.
 
 ## Development
 
-### Getting started
+See [DEVELOPMENT.md](DEVELOPMENT.md) for some notes on how to get started with development.
 
-This project is using [Maven](https://maven.apache.org) 3 and requires Java 8 or higher.
-
-- Clone this repository.
-- Run `mvn clean package` to build a JAR file.
-- Optional: Run `mvn jdeb:jdeb` and `mvn rpm:rpm` to create a DEB and RPM package respectively.
-- Copy generated JAR file in target directory to your Graylog plugin directory.
-- Restart Graylog.
-
-You can improve your development experience for the web interface part of your plugin
-dramatically by making use of hot reloading. To do this, do the following:
-
-- `git clone https://github.com/Graylog2/graylog2-server.git`
-- `cd graylog2-server/graylog2-web-interface`
-- `ln -s $YOURPLUGIN plugin/`
-- `npm install && npm start`
-
-### Plugin Release
-
-We are using the maven release plugin:
-
-```bash
-mvn release:prepare
-# ...
-mvn release:perform
-```
-
-This sets the version numbers, creates a tag and pushes to GitHub. Travis CI will build the release artifacts and upload to GitHub automatically.
+Contributions are welcome.
 
 ## Credits
 
