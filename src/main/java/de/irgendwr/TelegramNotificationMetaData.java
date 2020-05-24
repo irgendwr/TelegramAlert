@@ -31,7 +31,7 @@ public class TelegramNotificationMetaData implements PluginMetaData {
 
     @Override
     public URI getURL() {
-        return URI.create("https://github.com/TelegramAlert");
+        return URI.create("https://irgendwr.github.io/TelegramAlert/");
     }
 
     @Override
