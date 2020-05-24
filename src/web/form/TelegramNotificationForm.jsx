@@ -92,6 +92,7 @@ class TelegramNotificationForm extends React.Component {
                name="message_template"
                label="Message Template"
                type="textarea"
+               rows={10}
                bsStyle={validation.errors.message_template ? 'error' : null}
                help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details.</>)}
                value={config.message_template || ''}
