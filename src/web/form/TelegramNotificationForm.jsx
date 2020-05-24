@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 import lodash from 'lodash';
 
-import MultiSelect from 'components/common/MultiSelect';
-import SourceCodeEditor from 'components/common/SourceCodeEditor';
-import Input from 'components/bootstrap/Input';
-import FormsUtils from 'util/FormsUtils';
+import MultiSelect from './components/MultiSelect';
+import Input from './components/Input';
+import FormsUtils from './utils/FormUtils';
 
 const DEFAULT_MESSAGE_TEMPLATE = `<b>\${event.message}</b>\${if event.timerange_start}
 Timerange: \${event.timerange_start} to \${event.timerange_end}\${end}\${if streams}
@@ -40,17 +39,13 @@ class TelegramNotificationForm extends React.Component {
     onChange(nextConfig);
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     const { name } = event.target;
     this.propagateChange(name, FormsUtils.getValueFromInput(event.target));
   };
 
-  handleMessageTemplateChange = (nextValue) => {
-    this.propagateChange('message_template', nextValue);
-  };
-
-  handleChatsChange = (nextValue) => {
-    this.propagateChange('chats', nextValue === '' ? [] : nextValue.split(','));
+  handleChatsChange = selectedOptions => {
+    this.propagateChange('chats', selectedOptions || []);
   };
 
   render() {
@@ -92,20 +87,17 @@ class TelegramNotificationForm extends React.Component {
            {lodash.get(validation, 'errors.chats[0]', <>Telegram chat IDs of the recipients. See <a href="https://irgendwr.github.io/TelegramAlert/message-tool" target="_blank" rel="noopener">message-tool</a>.</>)}
           </HelpBlock>
         </FormGroup>
-
-        <FormGroup controlId="notification-message-template"
-                   validationState={validation.errors.message_template ? 'error' : null}>
-          <ControlLabel>Message Template</ControlLabel>
-          <SourceCodeEditor id="notification-message-template"
-                            mode="text"
-                            theme="light"
-                            value={config.message_template || ''}
-                            onChange={this.handleMessageTemplateChange} />
-          <HelpBlock>
-            {lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details.</>)}
-          </HelpBlock>
-        </FormGroup>
-
+        
+        <Input id="notification-message-template"
+               name="message_template"
+               label="Message Template"
+               type="textarea"
+               bsStyle={validation.errors.message_template ? 'error' : null}
+               help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details.</>)}
+               value={config.message_template || ''}
+               onChange={this.handleChange}
+               required />
+        
         <Input id="notification-proxy-address"
                name="proxy_address"
                label={<>HTTP Proxy Address <small className="text-muted">(Optional)</small></>}

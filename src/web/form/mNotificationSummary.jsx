@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Table, Button } from 'react-bootstrap';
 
-import styles from './CommonNotificationSummary.css';
+import styles from './mNotificationSummary.css';
 
 class CommonNotificationSummary extends React.Component {
   static propTypes = {

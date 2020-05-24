@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CommonNotificationSummary from './CommonNotificationSummary';
+import CommonNotificationSummary from './mNotificationSummary';
 
 class TelegramNotificationSummary extends React.Component {
   static propTypes = {
