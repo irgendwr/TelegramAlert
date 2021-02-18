@@ -42,7 +42,7 @@
 
         <graylog.version>${project.parent.version}</graylog.version>
         <graylog.plugin-dir>/usr/share/graylog-server/plugin</graylog.plugin-dir>
-        <jackson.version>2.10.2</jackson.version>
+        <jackson.version>2.10.5.1</jackson.version>
     </properties>
 
     <distributionManagement>
