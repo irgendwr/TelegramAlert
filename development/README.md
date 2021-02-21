@@ -6,6 +6,7 @@ This project is using [Maven](https://maven.apache.org) 3 and requires Java 8 or
 
 ```bash
 git clone https://github.com/irgendwr/TelegramAlert.git
+cd TelegramAlert
 # Get Graylog version from Maven POM (property: "graylog.version")
 # NOTE: this requires "libxml2-utils"
 export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="parent"]/*[local-name()="version"]/text()' pom.xml)
@@ -32,7 +33,7 @@ mvn release:prepare
 mvn release:perform
 ```
 
-This sets the version numbers, creates a tag and pushes to GitHub. Travis CI will build the release artifacts and upload to GitHub automatically.
+This sets the version numbers, creates a tag and pushes to GitHub. GitHub will build and release artifacts automatically.
 
 ## Update Graylog Project Parent
 
