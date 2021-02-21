@@ -17,9 +17,22 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get -y install libxml2-utils rpm
-    - name: Initialize Graylog
+    - name: Graylog version
+      id: vinfo
       run: |
         export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="parent"]/*[local-name()="version"]/text()' pom.xml)
+        echo "Building for Graylog ${GRAYLOG_VERSION}"
+        echo "::set-env name=GRAYLOG_VERSION::$GRAYLOG_VERSION"
+        echo "::set-output name=GRAYLOG_VERSION::$GRAYLOG_VERSION"
+        echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
+    - uses: actions/cache@v2
+      id: cache
+      with:
+        path: ../graylog2-server
+        key: ${{ runner.os }}-${{ steps.vinfo.outputs.date }}-${{ steps.vinfo.outputs.GRAYLOG_VERSION }}
+    - name: Initialize Graylog
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
         echo "Checking out Graylog ${GRAYLOG_VERSION}"
         git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
         pushd ../graylog2-server
@@ -39,7 +52,7 @@ jobs:
         files: |
           target/*.jar
           target/*.deb
-          target/*.rpm
+          target/**/*.rpm
         body: |
           This release **requires Graylog X.X.X or later**
           
