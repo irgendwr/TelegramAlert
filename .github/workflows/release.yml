@@ -34,27 +34,27 @@ jobs:
     - name: Cleanup
       run: rm -f target/original-*.jar
     - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            target/*.jar
-            target/*.deb
-            target/*.rpm
-          body: |
-            This release **requires Graylog X.X.X or later**
-            
-            To update the plugin you need to remove the old `telegram-alert-x.x.x.jar` file from your plugins folder and follow the [installation instructions](https://github.com/irgendwr/TelegramAlert#installation) again.
-            
-            ## Changelog
-            
-            - XXX
-            
-            ---
-            
-            In case you like this plugin I would be happy if you could star ⭐️ this repository to keep me motivated 😄
-            If you want to support my work directly, you can also [sponsor me on GitHub](https://github.com/sponsors/irgendwr).
-            
-            TelegramAlert currently has XXX ⭐ stars.
-          draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          target/*.jar
+          target/*.deb
+          target/*.rpm
+        body: |
+          This release **requires Graylog X.X.X or later**
+          
+          To update the plugin you need to remove the old `telegram-alert-x.x.x.jar` file from your plugins folder and follow the [installation instructions](https://github.com/irgendwr/TelegramAlert#installation) again.
+          
+          ## Changelog
+          
+          - XXX
+          
+          ---
+          
+          In case you like this plugin I would be happy if you could star ⭐️ this repository to keep me motivated 😄
+          If you want to support my work directly, you can also [sponsor me on GitHub](https://github.com/sponsors/irgendwr).
+          
+          TelegramAlert currently has XXX ⭐ stars.
+        draft: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
