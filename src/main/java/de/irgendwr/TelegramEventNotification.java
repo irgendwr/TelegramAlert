@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 public class TelegramEventNotification implements EventNotification {
-    public interface Factory extends EventNotification.Factory {
+    public interface Factory extends EventNotification.Factory<TelegramEventNotification> {
         @Override
         TelegramEventNotification create();
     }
