@@ -49,7 +49,7 @@ You may need to remove and re-create your Telegram Notifications.
 
 ## Development
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for some notes on how to get started with development.
+See [development/README.md](development/README.md) for some notes on how to get started with development.
 
 Contributions are welcome.
 
