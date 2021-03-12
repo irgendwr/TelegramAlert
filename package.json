@@ -17,7 +17,8 @@
   "author": "Jonas Bögle <graylog@jonas.boegle.me>",
   "license": "MIT",
   "dependencies": {
-    "react-select": "^2.4.3"
+    "react-select": "^2.4.3",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin"

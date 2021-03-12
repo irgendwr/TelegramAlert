@@ -21,7 +21,9 @@ popd
 
 Run `mvn clean package` to build a JAR file.
 
-Alternatively, the [Graylog documentation](https://docs.graylog.org/en/latest/pages/plugins.html) describes how to create a convenient setup with hot reloading.
+Note: You may need to define the correct Java version for Maven, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`
+
+*Alternatively, the [Graylog documentation](https://docs.graylog.org/en/latest/pages/plugins.html) describes how to create a convenient setup with hot reloading.*
 
 ## Plugin Release
 

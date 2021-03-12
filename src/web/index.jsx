@@ -4,6 +4,7 @@ import { PluginManifest, PluginStore } from 'graylog-web-plugin/plugin';
 
 import TelegramNotificationForm from 'form/TelegramNotificationForm';
 import TelegramNotificationSummary from 'form/TelegramNotificationSummary';
+import TelegramNotificationDetails from 'form/TelegramNotificationDetails';
 
 import packageJson from '../../package.json';
 
@@ -14,6 +15,7 @@ const manifest = new PluginManifest(packageJson, {
       displayName: 'Telegram Notification',
       formComponent: TelegramNotificationForm,
       summaryComponent: TelegramNotificationSummary,
+      detailsComponent: TelegramNotificationDetails,
       defaultConfig: TelegramNotificationForm.defaultConfig
     }
   ],
