@@ -81,3 +81,7 @@ docker rm mongo elasticsearch
 ### class file has wrong version
 
 Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` environment variable, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`.
+
+### Package "graylog-web-plugin" refers to a non-existing file
+
+`ln -s ../../graylog2-server target/graylog2-server`
