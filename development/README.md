@@ -41,7 +41,7 @@ This sets the version numbers, creates a tag and pushes to GitHub. GitHub will b
 
 Set the `version` of `parent` in `pom.xml`.
 
-Then, update (clone or checkout) your local graylog2-server, or, if you use the graylog-project setup you also need to update that:
+Then, update (clone or checkout) your local graylog2-server as shown in "Getting started" or update your graylog-project setup:
 
 ```bash
 # adjust the path below
@@ -51,6 +51,12 @@ graylog-project graylog-version --force-https-repos --set <VERSION>
 ```
 
 Re-add `<module>../graylog-project-repos/graylog-plugin-telegram-notification</module>` in `graylog-project/pom.xml`
+
+## Upgrade yarn dependencies
+
+`yarn upgrade`
+
+Afterwards it might be a good idea to check `yarn audit`. It's crazy how many vulnerabilities are around.
 
 ## Run mongo and elasticsearch from docker
 
@@ -69,3 +75,9 @@ Stop:
 docker stop mongo elasticsearch
 docker rm mongo elasticsearch
 ```
+
+## Troubleshooting
+
+### class file has wrong version
+
+Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` environment variable, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`.
