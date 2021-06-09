@@ -55,6 +55,13 @@ public class TelegramSender {
     public void sendMessage(String chatID, String message) throws TelegramSenderException {
         final CloseableHttpClient client;
 
+        // Check if message is too long.
+        // This may not be accurate as this doesn't take Telegrams entity parsing into account.
+        // https://github.com/irgendwr/TelegramAlert/issues/37#issuecomment-811818760
+        if (message.length() > 4096) {
+            throw new TelegramSenderException("The message you are sending is too long. Telegram messages are limited to 4096 characters.", true);
+        }
+
         if (StringUtils.isBlank(proxyAddress)) {
             client = HttpClients.createDefault();
         } else {
@@ -90,13 +97,13 @@ public class TelegramSender {
                 case 200:
                     break;
                 case 401:
-                    throw new TelegramSenderException("API request was unsuccessful (401 Unauthorized). Either your Bot Token or Proxy Credentials are invalid.", true);
+                    throw new TelegramSenderException("API request failed (401 Unauthorized). Either the bot token or proxy configuration is invalid.", true);
                 case 400:
                     body = EntityUtils.toString(entity, "UTF-8");
-                    throw new TelegramSenderException(String.format("API request was unsuccessful (400 Bad Request). This can caused by a syntax error in the Message Template or an invalid Chat ID. %s", body), false);
+                    throw new TelegramSenderException(String.format("API request failed (400 Bad Request). This can caused by a syntax error in the message template, too long message or an invalid chat ID. \nResponse: %s", body), true);
                 default:
                     body = EntityUtils.toString(entity, "UTF-8");
-                    throw new TelegramSenderException(String.format("API request was unsuccessful (%d): %s", status, body), false);
+                    throw new TelegramSenderException(String.format("API request failed (%d): %s", status, body), false);
             }
         } catch (IOException e) {
             throw new TelegramSenderException("API request failed: " + e.getMessage(), e, false);
