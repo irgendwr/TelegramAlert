@@ -14,11 +14,6 @@ public class RawNoopRenderer implements NamedRenderer, RawRenderer {
         return obj.toString();
     }
 
-    @SuppressWarnings("unused") // graylog 2.0
-    public String render(Object obj, String format, Locale locale) {
-        return render(obj, format, locale, null);
-    }
-
     @Override
     public String getName() {
         return "raw";
