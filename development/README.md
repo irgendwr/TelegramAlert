@@ -19,6 +19,8 @@ mvn generate-resources -pl graylog2-server -B -V
 popd
 ```
 
+## Build
+
 Run `mvn clean package` to build a JAR file.
 
 Note: You may need to define the correct Java version for Maven, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`
@@ -41,7 +43,23 @@ This sets the version numbers, creates a tag and pushes to GitHub. GitHub will b
 
 Set the `version` of `parent` in `pom.xml`.
 
-Then, update (clone or checkout) your local graylog2-server as shown in "Getting started" or update your graylog-project setup:
+Then, update (clone or checkout) your local graylog2-server as shown in "Getting started":
+
+```bash
+# Delete old Graylog-Server
+rm -rf ../graylog2-server
+
+export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="parent"]/*[local-name()="version"]/text()' pom.xml)
+# Checkout desired Graylog version
+echo "Checking out Graylog ${GRAYLOG_VERSION}"
+git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
+# Build Graylog web interface
+pushd ../graylog2-server
+mvn generate-resources -pl graylog2-server -B -V
+popd
+```
+
+or update your graylog-project setup:
 
 ```bash
 # adjust the path below
