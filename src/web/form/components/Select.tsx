@@ -1,17 +1,33 @@
-// @flow strict
+/*
+ * Copyright (C) 2020 Graylog, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the Server Side Public License, version 1,
+ * as published by MongoDB, Inc.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Server Side Public License for more details.
+ *
+ * You should have received a copy of the Server Side Public License
+ * along with this program. If not, see
+ * <http://www.mongodb.com/licensing/server-side-public-license>.
+ */
 import * as React from 'react';
-import lodash from 'lodash';
 import PropTypes from 'prop-types';
-import ReactSelect, { components as Components, Creatable, createFilter } from 'react-select';
+import { isEqual, find } from 'lodash';
+import ReactSelect, { components as Components, createFilter } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 import Icon from './Icon';
 
-type Option = { [string]: any };
+export const CONTROL_CLASS = 'common-select-control';
 
-const MultiValueRemove = props => (
-  <Components.MultiValueRemove {...props}>
-    &times;
-  </Components.MultiValueRemove>
+type Option = { [key: string]: any };
+
+const MultiValueRemove = (props) => (
+  <Components.MultiValueRemove {...props} />
 );
 
 const IndicatorSeparator = () => null;
@@ -24,6 +40,7 @@ const DropdownIndicator = (props) => {
     innerProps: { ref, ...restInnerProps },
     /* eslint-enable react/prop-types */
   } = props;
+
   return (
     <div style={getStyles('dropdownIndicator', props)}
          ref={ref}
@@ -33,13 +50,18 @@ const DropdownIndicator = (props) => {
   );
 };
 
+const Control = (props) => (
+  <Components.Control {...props} className={CONTROL_CLASS} />
+);
+
 type CustomOptionProps = {
   data: any,
 };
 /* eslint-disable react/prop-types */
-const CustomOption = (optionRenderer: (Option) => React.Node) => (
-  (props: CustomOptionProps): React.Element<Components.Option> => {
+const CustomOption = (optionRenderer: (Option) => React.ReactElement) => (
+  (props: CustomOptionProps): React.ReactElement => {
     const { data, ...rest } = props;
+
     return (
       <Components.Option {...rest}>
         {optionRenderer(data)}
@@ -47,14 +69,14 @@ const CustomOption = (optionRenderer: (Option) => React.Node) => (
     );
   }
 );
-/* eslint-enable react/prop-types */
 
-const CustomSingleValue = (valueRenderer: (Option) => React.Node) => (
+const CustomSingleValue = (valueRenderer: (option: Option) => React.ReactElement) => (
   ({ data, ...rest }) => <Components.SingleValue {...rest}>{valueRenderer(data)}</Components.SingleValue>
 );
+/* eslint-enable react/prop-types */
 
-const CustomInput = (inputProps: { [string]: any }) => (
-  props => <Components.Input {...props} {...inputProps} />
+const CustomInput = (inputProps: { [key: string]: any }) => (
+  (props) => <Components.Input {...props} {...inputProps} />
 );
 
 const dropdownIndicator = (base, state) => ({
@@ -74,21 +96,22 @@ const multiValue = base => ({
   ...base,
   backgroundColor: '#ebf5ff',
   color: '#007eff',
-  border: '1px solid rgba(0,126,255,.24)',
+  border: `1px solid rgba(0,126,255,.24)`,
 });
 
 const multiValueLabel = base => ({
   ...base,
   color: 'unset',
-  paddingLeft: '5px',
-  paddingRight: '5px',
+  padding: '2px 5px',
+  fontSize: '14px',
 });
 
 const multiValueRemove = base => ({
   ...base,
-  borderLeft: '1px solid rgba(0,126,255,.24)',
+  borderLeft: `1px solid rgba(0,126,255,.24)`,
   paddingLeft: '5px',
   paddingRight: '5px',
+  borderRadius: '0',
   ':hover': {
     backgroundColor: 'rgba(0,113,230,.08)',
   },
@@ -108,6 +131,11 @@ const menu = base => ({
   zIndex: 5,
   border: '1px solid rgba(102, 175, 233, 0.5)',
   boxShadow: '0 0 4px rgba(102, 175, 233, 0.3)',
+});
+
+const menuPortal = base => ({
+  ...base,
+  zIndex: 'auto',
 });
 
 const singleValueAndPlaceholder = base => ({
@@ -133,14 +161,11 @@ const placeholder = base => ({
   paddingRight: '20px',
 });
 
-const controlFocus = props => (base, { isFocused }) => {
-  const { size } = props;
-
+const controlFocus = ({ size }) => (base, { isFocused }) => {
   const borderColor = isFocused ? '#66afe9' : base.borderColor;
   const borderWidth = isFocused ? 1 : base.borderWidth;
   const outline = isFocused ? 0 : base.outline;
   const boxShadow = isFocused ? 'inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, 0.6)' : 'inset 0 1px 1px rgba(0, 0, 0, 0.075)';
-
   const controlSize = size === 'small' ? controlSmall : controlNormal;
 
   return {
@@ -148,8 +173,8 @@ const controlFocus = props => (base, { isFocused }) => {
     ...controlSize,
     borderColor,
     borderWidth,
-    outline,
     boxShadow,
+    outline,
     alignItems: 'center',
   };
 };
@@ -159,10 +184,18 @@ const valueContainer = base => ({
   padding: '2px 12px',
 });
 
-const _components: { [string]: React.ComponentType<any> } = {
+type OverriddenComponents = {
+  DropdownIndicator: React.ComponentType<any>;
+  MultiValueRemove: React.ComponentType<any>;
+  IndicatorSeparator: React.ComponentType<any>;
+  Control: React.ComponentType<any>;
+};
+
+const _components: OverriddenComponents = {
   DropdownIndicator,
   MultiValueRemove,
   IndicatorSeparator,
+  Control,
 };
 
 const _styles = props => ({
@@ -172,37 +205,56 @@ const _styles = props => ({
   multiValueLabel,
   multiValueRemove,
   menu,
+  menuPortal,
   singleValue: singleValueAndPlaceholder,
   placeholder,
   control: controlFocus(props),
   valueContainer,
 });
 
+type ComponentsProp = {
+  MultiValueLabel?: React.ComponentType<any>,
+  SelectContainer?: React.ComponentType<any>,
+};
+
 type Props = {
   addLabelText?: string,
   allowCreate?: boolean,
   autoFocus?: boolean,
   clearable?: boolean,
-  components: ?{| [string]: React.ComponentType<any> |},
+  components?: ComponentsProp | null | undefined,
   delimiter?: string,
   disabled?: boolean,
-  displayKey?: string,
-  inputProps?: { [string]: any },
+  displayKey: string,
+  id?: string,
+  ignoreAccents?: boolean,
+  inputId?: string,
+  inputProps?: { [key: string]: any },
   matchProp?: 'any' | 'label' | 'value',
   multi?: boolean,
+  menuPortalTarget?: HTMLElement,
+  name?: string,
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void,
   onChange: (string) => void,
-  onReactSelectChange?: (Option | Array<Option>) => void,
-  optionRenderer?: (Option) => React.Node,
+  onReactSelectChange?: (option: Option | Option[]) => void,
+  optionRenderer?: (option: Option) => React.ReactElement,
   options: Array<Option>,
   placeholder: string,
+  ref?: React.Ref<React.ComponentType>,
   size?: 'normal' | 'small',
-  value?: string,
-  valueKey?: string,
-  valueRenderer?: (Option) => React.Node,
+  value?: Object | Array<Object> | null | undefined,
+  valueKey: string,
+  valueRenderer?: (option: Option) => React.ReactElement,
+};
+
+type CustomComponents = {
+  Input?: React.ComponentType<any>,
+  Option?: React.ComponentType<any>,
+  SingleValue?: React.ComponentType<any>,
 };
 
 type State = {
-  customComponents?: {| [string]: React.ComponentType<any> |},
+  customComponents: CustomComponents,
   value: any,
 };
 
@@ -222,6 +274,12 @@ class Select extends React.Component<Props, State> {
     disabled: PropTypes.bool,
     /** Indicates which option object key contains the text to display in the select input. Same as react-select's `labelKey` prop. */
     displayKey: PropTypes.string,
+    /** ID of Select container component */
+    id: PropTypes.string,
+    /** ID of underlying input */
+    inputId: PropTypes.string,
+    /** Indicates whether the auto-completion should return results including accents/diacritics when searching for their non-accent counterpart */
+    ignoreAccents: PropTypes.bool,
     /**
      * @deprecated Use `inputId` or custom components with the `components` prop instead.
      * Custom attributes for the input (inside the Select).
@@ -231,6 +289,10 @@ class Select extends React.Component<Props, State> {
     matchProp: PropTypes.oneOf(['any', 'label', 'value']),
     /** Specifies if multiple values can be selected or not. */
     multi: PropTypes.bool,
+    /** name attribute for Select element */
+    name: PropTypes.string,
+    /** Callback when select has lost focus */
+    onBlur: PropTypes.func,
     /**
      * Callback when selected option changes. It receives the value of the
      * selected option as an argument. If `multi` is enabled, the passed
@@ -250,15 +312,32 @@ class Select extends React.Component<Props, State> {
     /** Size of the select input. */
     size: PropTypes.oneOf(['normal', 'small']),
     /**
-     * String containing the selected value. If `multi` is enabled, it must
-     * be a string containing all values separated by the `delimiter`.
+     * Value which can be the selected option or the value of the selected option.
+     * If `multi` is enabled, it must be a string containing all values separated by the `delimiter`.
      */
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object),
+    ]),
     /** Indicates which option object key contains the value of the option. */
     valueKey: PropTypes.string,
     /** Custom function to render the selected option in the Select. */
     valueRenderer: PropTypes.func,
-  };
+    /** Label text for add button */
+    addLabelText: PropTypes.string,
+    /** Automatically Focus on Select */
+    autoFocus: PropTypes.bool,
+    /** special onChange handler */
+    onReactSelectChange: PropTypes.func,
+    /** Select placeholder text */
+    placeholder: PropTypes.string,
+    /** Placement of the menu: "top", "bottom", "auto" */
+    menuPlacement: PropTypes.oneOf(['top', 'bottom', 'auto']),
+    /** Max height of the menu */
+    maxMenuHeight: PropTypes.number,
+  }
 
   static defaultProps = {
     addLabelText: undefined,
@@ -269,55 +348,71 @@ class Select extends React.Component<Props, State> {
     delimiter: ',',
     disabled: false,
     displayKey: 'label',
+    id: undefined,
+    ignoreAccents: true,
+    inputId: undefined,
+    onBlur: undefined,
     inputProps: undefined,
     matchProp: 'any',
     multi: false,
+    name: undefined,
     onReactSelectChange: undefined,
     optionRenderer: undefined,
+    placeholder: undefined,
     size: 'normal',
     value: undefined,
     valueKey: 'value',
     valueRenderer: undefined,
+    menuPlacement: 'bottom',
+    maxMenuHeight: 300,
   };
 
   constructor(props: Props) {
     super(props);
     const { inputProps, optionRenderer, value, valueRenderer } = props;
+
     this.state = {
       customComponents: this.getCustomComponents(inputProps, optionRenderer, valueRenderer),
       value,
     };
   }
 
-  componentWillReceiveProps = (nextProps: Props) => {
+  UNSAFE_componentWillReceiveProps = (nextProps: Props) => {
     const { inputProps, optionRenderer, value, valueRenderer } = this.props;
+
     if (value !== nextProps.value) {
       this.setState({ value: nextProps.value });
     }
-    if (inputProps !== nextProps.inputProps
+
+    if (!isEqual(inputProps, nextProps.inputProps)
       || optionRenderer !== nextProps.optionRenderer
       || valueRenderer !== nextProps.valueRenderer) {
       this.setState({ customComponents: this.getCustomComponents(inputProps, optionRenderer, valueRenderer) });
     }
   };
 
-  getCustomComponents = (inputProps?: { [string]: any }, optionRenderer?: (Option) => React.Node,
-    valueRenderer?: (Option) => React.Node): any => {
-    const customComponents = {};
+  getCustomComponents = (inputProps?: { [key: string]: any }, optionRenderer?: (option: Option) => React.ReactElement,
+    valueRenderer?: (option: Option) => React.ReactElement): any => {
+    const customComponents: { [key: string]: any } = {};
+
     if (inputProps) {
       customComponents.Input = CustomInput(inputProps);
     }
+
     if (optionRenderer) {
       customComponents.Option = CustomOption(optionRenderer);
     }
+
     if (valueRenderer) {
       customComponents.SingleValue = CustomSingleValue(valueRenderer);
     }
+
     return customComponents;
   };
 
   getValue = () => {
     const { value } = this.state;
+
     return value;
   };
 
@@ -329,17 +424,19 @@ class Select extends React.Component<Props, State> {
     const { multi, valueKey, delimiter } = this.props;
 
     if (option) {
-      return multi ? option.map(i => i[valueKey]) : option[valueKey || ''];
+      return multi ? option.map((i) => i[valueKey]).join(delimiter) : option[valueKey || ''];
     }
+
     return '';
   };
 
   _onChange = (selectedOption: Option) => {
     const value = this._extractOptionValue(selectedOption);
+
     this.setState({ value: value });
 
-    // eslint-disable-next-line no-unused-vars
-    const { onChange = (v: string|string[]) => {} } = this.props;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const { onChange = () => {} } = this.props;
 
     onChange(value);
   };
@@ -347,16 +444,24 @@ class Select extends React.Component<Props, State> {
   // Using ReactSelect.Creatable now needs to get values as objects or they are not display
   // This method takes care of formatting a string value into options react-select supports.
   _formatInputValue = (value: string): Array<Option> => {
-    const { options, displayKey = '', valueKey = '', delimiter } = this.props;
+    const { options, displayKey, valueKey, delimiter } = this.props;
+
     return value.split(delimiter).map((v: string) => {
       const predicate: Option = {
         [valueKey]: v,
         [displayKey]: v,
       };
-      const option = lodash.find(options, predicate);
+      const option = find(options, predicate);
 
       return option || predicate;
     });
+  };
+
+  createCustomFilter = (stringify: (any) => string) => {
+    const { matchProp, ignoreAccents } = this.props;
+    const options = { ignoreAccents };
+
+    return matchProp === 'any' ? createFilter(options) : createFilter({ ...options, stringify });
   };
 
   render() {
@@ -370,48 +475,58 @@ class Select extends React.Component<Props, State> {
       onReactSelectChange,
     } = this.props;
     const { customComponents, value } = this.state;
-    const SelectComponent = allowCreate ? Creatable : ReactSelect;
+    const SelectComponent = allowCreate ? CreatableSelect : ReactSelect;
 
     let formattedValue = value;
-    if (value && allowCreate) {
+
+    if (formattedValue && allowCreate) {
       formattedValue = this._formatInputValue(value);
     } else {
-      formattedValue = (value || '').split(delimiter).map(v => options.find(option => option[valueKey || ''] === v));
+      formattedValue = (typeof value === 'string'
+        ? (value ?? '').split(delimiter)
+        : [value])
+        .map((v) => options.find((option) => option[valueKey || ''] === v));
     }
 
     const {
       multi: isMulti,
       disabled: isDisabled,
       clearable: isClearable,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       inputProps, // Do not pass down prop
       matchProp,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       optionRenderer, // Do not pass down prop
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       valueRenderer, // Do not pass down prop
+      menuPortalTarget,
       ...rest
     } = this.props;
 
-    const stringify = option => option[matchProp];
-    const customFilter = matchProp === 'any' ? createFilter() : createFilter({ stringify });
+    const stringify = (option) => option[matchProp];
+    const customFilter = this.createCustomFilter(stringify);
 
-    const mergedComponents: { [string]: React.ComponentType<any> } = {
+    const mergedComponents = {
       ..._components,
       ...components,
       ...customComponents,
     };
+
     return (
       <SelectComponent {...rest}
                        onChange={onReactSelectChange || this._onChange}
                        isMulti={isMulti}
                        isDisabled={isDisabled}
                        isClearable={isClearable}
-                       getOptionLabel={option => option[displayKey]}
-                       getOptionValue={option => option[valueKey]}
+                       getOptionLabel={(option) => option[displayKey] || option.label}
+                       getOptionValue={(option) => option[valueKey]}
                        filterOption={customFilter}
                        components={mergedComponents}
-                       isOptionDisabled={option => !!option.disabled}
-                       styles={{
-                         ..._styles(this.props),
-                       }}
+                       menuPortalTarget={menuPortalTarget}
+                       isOptionDisabled={(option) => !!option.disabled}
+                       /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                       // @ts-ignore TODO: Fix props assignment for _styles
+                       styles={_styles(this.props)}
                        value={formattedValue} />
     );
   }

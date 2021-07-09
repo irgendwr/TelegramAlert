@@ -17,7 +17,8 @@
   "author": "Jonas Bögle <graylog@jonas.boegle.me>",
   "license": "MIT",
   "dependencies": {
-    "react-select": "^2.4.3",
+    "lodash": "^4.17.21",
+    "react-select": "^4.3.0",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
