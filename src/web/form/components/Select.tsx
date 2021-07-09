@@ -129,6 +129,7 @@ const controlNormal = {
 const menu = base => ({
   ...base,
   zIndex: 5,
+  color: '#007eff',
   border: '1px solid rgba(102, 175, 233, 0.5)',
   boxShadow: '0 0 4px rgba(102, 175, 233, 0.3)',
 });
