@@ -55,13 +55,6 @@ public class TelegramSender {
     public void sendMessage(String chatID, String message) throws TelegramSenderException {
         final CloseableHttpClient client;
 
-        // Check if message is too long.
-        // This may not be accurate as this doesn't take Telegrams entity parsing into account.
-        // https://github.com/irgendwr/TelegramAlert/issues/37#issuecomment-811818760
-        if (message.length() > 4096) {
-            throw new TelegramSenderException("The message you are sending is too long. Telegram messages are limited to 4096 characters.", true);
-        }
-
         if (StringUtils.isBlank(proxyAddress)) {
             client = HttpClients.createDefault();
         } else {

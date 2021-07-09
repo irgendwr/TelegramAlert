@@ -41,6 +41,9 @@ public abstract class MessageModelData {
     @JsonProperty("backlog_size")
     public abstract int backlogSize();
 
+    @JsonProperty("message_too_long")
+    public abstract boolean messageTooLong();
+
     @JsonProperty("graylog_url")
     public abstract String graylogUrl();
 
@@ -74,6 +77,8 @@ public abstract class MessageModelData {
         public abstract Builder backlog(List<MessageSummary> backlog);
 
         public abstract Builder backlogSize(int backlogSize);
+
+        public abstract Builder messageTooLong(boolean messageTooLong);
 
         public abstract Builder graylogUrl(String graylogUrl);
 

@@ -10,9 +10,13 @@ import FormsUtils from './utils/FormUtils';
 const DEFAULT_MESSAGE_TEMPLATE = `<b>\${event.message}</b>\${if event.timerange_start}
 Timerange: \${event.timerange_start} to \${event.timerange_end}\${end}\${if streams}
 Streams:\${foreach streams stream} <a href='\${stream.url}'>\${stream.title}</a>\${end}\${end}
-\${if backlog}<code>\${foreach backlog message}
+\${if message_too_long}
+An alert was triggered, but the message was too long. Please check the Graylog interface for details.
+\${else}\${if backlog}<code>\${foreach backlog message}
 \${message.message}
-\${end}</code>\${else}<i>- no backlog -</i>
+\${end}</code>\${else}
+<i>- no backlog -</i>
+\${end}
 \${end}`;
 
 class TelegramNotificationForm extends React.Component {
@@ -79,7 +83,6 @@ class TelegramNotificationForm extends React.Component {
           <MultiSelect id="notification-chats"
                       value={Array.isArray(config.chats) ? config.chats.join(',') : ''}
                       addLabelText={'Add chat ID "{label}"?'}
-                      placeholder="Enter chat ID"
                       options={[]}
                       onChange={this.handleChatsChange}
                       allowCreate />
@@ -94,7 +97,7 @@ class TelegramNotificationForm extends React.Component {
                type="textarea"
                rows={10}
                bsStyle={validation.errors.message_template ? 'error' : null}
-               help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details.</>)}
+               help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details. Telegram messages are <b>limited to 4096 characters</b>.</>)}
                value={config.message_template || ''}
                onChange={this.handleChange}
                required />

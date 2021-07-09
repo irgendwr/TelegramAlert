@@ -43,6 +43,9 @@ public class TelegramEventNotification implements EventNotification {
 
     private static final Logger LOG = LoggerFactory.getLogger(TelegramEventNotification.class);
 
+    // Telegram messages are limited to 4096 characters. This is the default notification message if the message is too long.
+    // You can customize it by checking if `message_too_long` is `true` in your message template.
+    private static final String DEFAULT_MESSAGE_TOO_LONG_TEXT = "An alert was triggered, but the message was too long. Please check the Graylog interface for details.";
     private static final String UNKNOWN = "<unknown>";
 
     private final EventNotificationService notificationCallbackService;
@@ -86,9 +89,23 @@ public class TelegramEventNotification implements EventNotification {
         }
 
         ImmutableList<MessageSummary> backlog = notificationCallbackService.getBacklogForEvent(ctx);
-        final Map<String, Object> model = getModel(ctx, backlog, config);
-
+        Map<String, Object> model = getModel(ctx, backlog, config, false);
         String message = buildMessage(config.messageTemplate(), model);
+
+        // Check if message is too long.
+        // This may not be accurate as this doesn't take Telegrams entity parsing into account.
+        // https://github.com/irgendwr/TelegramAlert/issues/37#issuecomment-811818760
+        if (message.length() > 4096) {
+            // first, try the template again with `message_too_long = true`
+            // this allows you to customize the message if you check that variable
+            model = getModel(ctx, backlog, config, true);
+            message = buildMessage(config.messageTemplate(), model);
+        }
+        if (message.length() > 4096) {
+            // as a fallback, send the default text
+            message = DEFAULT_MESSAGE_TOO_LONG_TEXT;
+        }
+
         TelegramSender bot = new TelegramSender(config.botToken(), "HTML");
         bot.proxyAddress(config.proxyAddress());
         bot.proxyUser(config.proxyUser());
@@ -130,7 +147,7 @@ public class TelegramEventNotification implements EventNotification {
         return this.templateEngine.transform(template, model);
     }
 
-    private Map<String, Object> getModel(EventNotificationContext ctx, ImmutableList<MessageSummary> backlog, TelegramEventNotificationConfig config) {
+    private Map<String, Object> getModel(EventNotificationContext ctx, ImmutableList<MessageSummary> backlog, TelegramEventNotificationConfig config, boolean messageTooLong) {
         final Optional<EventDefinitionDto> definitionDto = ctx.eventDefinition();
         final Optional<JobTriggerDto> jobTriggerDto = ctx.jobTrigger();
 
@@ -150,6 +167,7 @@ public class TelegramEventNotification implements EventNotification {
                 .event(ctx.event())
                 .backlog(backlog)
                 .backlogSize(backlog.size())
+                .messageTooLong(messageTooLong)
                 .graylogUrl(config.graylogURL())
                 .streams(streams)
                 .build();
