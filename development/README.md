@@ -32,9 +32,7 @@ Note: You may need to define the correct Java version for Maven, eg. via `export
 We are using the maven release plugin:
 
 ```bash
-mvn release:prepare
-# ...
-mvn release:perform
+mvn release:prepare -Dresume=false
 ```
 
 This sets the version numbers, creates a tag and pushes to GitHub. GitHub will build and release artifacts automatically.
