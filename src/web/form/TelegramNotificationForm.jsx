@@ -49,7 +49,7 @@ class TelegramNotificationForm extends React.Component {
   };
 
   handleChatsChange = selectedOptions => {
-    this.propagateChange('chats', selectedOptions || []);
+    this.propagateChange('chats', selectedOptions === '' ? [] : selectedOptions.split(','));
   };
 
   render() {
