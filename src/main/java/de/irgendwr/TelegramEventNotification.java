@@ -60,14 +60,13 @@ public class TelegramEventNotification implements EventNotification {
                                      StreamService streamService,
                                      NotificationService notificationService,
                                      NodeId nodeId,
-                                     ObjectMapper objectMapper,
-                                     Engine templateEngine) {
+                                     ObjectMapper objectMapper) {
         this.notificationCallbackService = notificationCallbackService;
         this.streamService = streamService;
         this.notificationService = requireNonNull(notificationService, "notificationService");
         this.nodeId = requireNonNull(nodeId, "nodeId");
         this.objectMapper = requireNonNull(objectMapper, "objectMapper");
-        this.templateEngine = requireNonNull(templateEngine, "templateEngine");
+        this.templateEngine = new Engine();
         templateEngine.registerNamedRenderer(new RawNoopRenderer());
         templateEngine.setEncoder(new TelegramHTMLEncoder());
     }
