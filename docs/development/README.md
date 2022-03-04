@@ -62,7 +62,7 @@ or update your graylog-project setup:
 ```bash
 # adjust the path below
 cd graylog-project
-# replace <VERSION> with the Graylog version (e.g. 3.3.0)
+# replace <VERSION> with the Graylog version (e.g. 4.2.7)
 graylog-project graylog-version --force-https-repos --set <VERSION>
 ```
 
