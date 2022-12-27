@@ -97,7 +97,7 @@ class TelegramNotificationForm extends React.Component {
                type="textarea"
                rows={10}
                bsStyle={validation.errors.message_template ? 'error' : null}
-               help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://docs.graylog.org/en/latest/pages/alerts.html#email-alert-notification" target="_blank" rel="noopener">Graylog documentation</a> for more details. Telegram messages are <b>limited to 4096 characters</b>.</>)}
+               help={lodash.get(validation, 'errors.message_template[0]', <>This uses the same syntax as the EmailNotification Template. See <a href="https://go2docs.graylog.org/5-0/interacting_with_your_log_data/notifications.html?tocpath=Interacting%20with%20Your%20Log%20Data%7CAlerts%20and%20Notifications%7CNotifications%7C_____0#EmailAlertNotification" target="_blank" rel="noopener">Graylog documentation</a> for more details. Telegram messages are <b>limited to 4096 characters</b>.</>)}
                value={config.message_template || ''}
                onChange={this.handleChange}
                required />

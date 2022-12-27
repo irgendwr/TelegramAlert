@@ -16,16 +16,18 @@ git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/gr
 # Build Graylog web interface
 pushd ../graylog2-server
 mvn generate-resources -pl graylog2-server -B -V
-popd
+pushd graylog2-web-interface
+yarn run webpack --config webpack.vendor.js
+popd; popd
 ```
 
 ## Build
 
 Run `mvn clean package` to build a JAR file.
 
-Note: You may need to define the correct Java version for Maven, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`
+Note: You may need to define the correct Java version for Maven, eg. via `export JAVA_HOME=/usr/lib/jvm/java-17-openjdk`
 
-*Alternatively, the [Graylog documentation](https://docs.graylog.org/en/latest/pages/plugins.html) describes how to create a convenient setup with hot reloading.*
+*Alternatively, the [Graylog documentation](https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/plugins.html?tocpath=What%20More%20Can%20Graylog%20Do%20for%20Me%253F%7CPlugins%7C_____0#WritingPlugins) describes how to create a convenient setup with hot reloading.*
 
 ## Plugin Release
 
@@ -62,7 +64,7 @@ or update your graylog-project setup:
 ```bash
 # adjust the path below
 cd graylog-project
-# replace <VERSION> with the Graylog version (e.g. 4.2.7)
+# replace <VERSION> with the Graylog version (e.g. 5.0.1)
 graylog-project graylog-version --force-https-repos --set <VERSION>
 ```
 
@@ -78,12 +80,12 @@ Afterwards it might be a good idea to check `yarn audit`. It's crazy how many vu
 
 Run:
 ```bash
-docker run --rm --name mongo -p 27017:27017 -d mongo:3
+docker run --rm --name mongo -p 27017:27017 -d mongo:5
 docker run --rm --name elasticsearch \
     -e "http.host=0.0.0.0" \
     -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
     -p 9200:9200 -p 9300:9300 \
-    -d docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
+    -d docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
 ```
 
 Stop:
@@ -96,7 +98,18 @@ docker rm mongo elasticsearch
 
 ### class file has wrong version
 
-Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` environment variable, eg. via `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk`.
+Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` environment variable, eg. via `export JAVA_HOME=/usr/lib/jvm/java-17-openjdk`.
+
+### Cannot find module '.../graylog2-server/graylog2-web-interface/manifests/vendor-manifest.json'
+
+```bash
+pushd ../graylog2-server
+mvn generate-resources -pl graylog2-server -B -V
+pushd graylog2-web-interface
+# Build Vendor Manifest:
+yarn run webpack --config webpack.vendor.js
+popd; popd
+```
 
 ### Package "graylog-web-plugin" refers to a non-existing file
 
