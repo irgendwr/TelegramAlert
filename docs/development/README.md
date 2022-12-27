@@ -17,7 +17,8 @@ git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/gr
 pushd ../graylog2-server
 mvn generate-resources -pl graylog2-server -B -V
 pushd graylog2-web-interface
-yarn run webpack --config webpack.vendor.js
+yarn install
+env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
 popd; popd
 ```
 
@@ -107,7 +108,8 @@ pushd ../graylog2-server
 mvn generate-resources -pl graylog2-server -B -V
 pushd graylog2-web-interface
 # Build Vendor Manifest:
-yarn run webpack --config webpack.vendor.js
+yarn install
+env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
 popd; popd
 ```
 

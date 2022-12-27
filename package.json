@@ -8,8 +8,12 @@
   },
   "scripts": {
     "build": "webpack",
-    "lint": "eslint -c .eslintrc src/**/*",
+    "lint": "eslint src",
+    "lint:path": "eslint",
     "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": "graylog"
   },
   "keywords": [
     "graylog"
@@ -23,8 +27,5 @@
   },
   "devDependencies": {
     "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin"
-  },
-  "resolutions": {
-    "**/**/create-react-class": "^15.7.0"
   }
 }
