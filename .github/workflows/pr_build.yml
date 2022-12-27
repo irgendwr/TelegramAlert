@@ -25,7 +25,7 @@ jobs:
         echo "GRAYLOG_VERSION=${GRAYLOG_VERSION}" >> $GITHUB_ENV
         echo "::set-output name=GRAYLOG_VERSION::$GRAYLOG_VERSION"
         echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: cache
       with:
         path: ../graylog2-server
