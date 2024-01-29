@@ -2,7 +2,6 @@
 
 [![Build status](https://github.com/irgendwr/TelegramAlert/workflows/build/badge.svg)](https://github.com/irgendwr/TelegramAlert/actions?query=workflow%3Abuild)
 [![GitHub Release](https://img.shields.io/github/release/irgendwr/TelegramAlert.svg)](https://github.com/irgendwr/TelegramAlert/releases)
-[![Graylog Marketplace](https://img.shields.io/badge/Graylog-Marketplace-blue.svg)](https://marketplace.graylog.org/addons/8a67cfdf-8c1c-4d17-87bf-db38e79015f1)
 
 TelegramNotification allows you to send [Graylog](https://www.graylog.org) alert messages to a specified [Telegram](https://telegram.org) chat.
 
