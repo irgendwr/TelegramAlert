@@ -17,15 +17,20 @@ import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class TelegramSender {
-    private static final String API = "https://api.telegram.org/bot%s/%s";
+    private static final String API = "https://api.telegram.org";
 
     private String token;
     private String parseMode;
     private String proxyAddress;
     private String proxyUser;
     private String proxyPassword;
+
+    private String apiURL(String command) {
+        return API + "/bot" + token + "/" + command;
+    }
 
     public TelegramSender(String botToken) {
         token = botToken;
@@ -77,7 +82,7 @@ public class TelegramSender {
             client = clientBuilder.build();
         }
 
-        HttpPost request = new HttpPost(String.format(API, token, "sendMessage"));
+        HttpPost request = new HttpPost(apiURL("sendMessage"));
 
         request.setEntity(createJSONEntity(chatID, message));
 
@@ -93,10 +98,10 @@ public class TelegramSender {
                     throw new TelegramSenderException("API request failed (401 Unauthorized). Either the bot token or proxy configuration is invalid.", true);
                 case 400:
                     body = EntityUtils.toString(entity, "UTF-8");
-                    throw new TelegramSenderException(String.format("API request failed (400 Bad Request). This can caused by a syntax error in the message template, too long message or an invalid chat ID. \nResponse: %s", body), true);
+                    throw new TelegramSenderException(String.format(Locale.ROOT, "API request failed (400 Bad Request). This can caused by a syntax error in the message template, too long message or an invalid chat ID. \nResponse: %s", body), true);
                 default:
                     body = EntityUtils.toString(entity, "UTF-8");
-                    throw new TelegramSenderException(String.format("API request failed (%d): %s", status, body), false);
+                    throw new TelegramSenderException(String.format(Locale.ROOT, "API request failed (%d): %s", status, body), false);
             }
         } catch (IOException e) {
             throw new TelegramSenderException("API request failed: " + e.getMessage(), e, false);

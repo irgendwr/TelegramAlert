@@ -2,6 +2,8 @@ package de.irgendwr.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableList;
+
 import org.graylog.events.event.EventDto;
 import org.graylog.events.processor.EventDefinitionDto;
 import org.graylog2.plugin.MessageSummary;
@@ -36,7 +38,7 @@ public abstract class MessageModelData {
     public abstract EventDto event();
 
     @JsonProperty("backlog")
-    public abstract List<MessageSummary> backlog();
+    public abstract ImmutableList<MessageSummary> backlog();
 
     @JsonProperty("backlog_size")
     public abstract int backlogSize();
@@ -48,7 +50,7 @@ public abstract class MessageModelData {
     public abstract String graylogUrl();
 
     @JsonProperty("streams")
-    public abstract List<StreamModelData> streams();
+    public abstract ImmutableList<StreamModelData> streams();
 
     public static Builder builder() {
         return new AutoValue_MessageModelData.Builder();
