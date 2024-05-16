@@ -8,7 +8,6 @@ import de.irgendwr.models.StreamModelData;
 import de.irgendwr.template.RawNoopRenderer;
 import de.irgendwr.template.TelegramHTMLEncoder;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.graylog.events.notifications.*;
 import org.graylog.events.processor.EventDefinitionDto;
 import org.graylog.events.processor.aggregation.AggregationEventProcessorConfig;
@@ -23,7 +22,7 @@ import org.graylog2.streams.StreamService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -138,7 +137,7 @@ public class TelegramEventNotification implements EventNotification {
         }
 
         LOG.debug("Sending Telegram Messages to chats <{}> using notification <{}>",
-                Strings.join(config.chats(), ','),
+                String.join(",", config.chats()),
                 ctx.notificationId());
     }
 

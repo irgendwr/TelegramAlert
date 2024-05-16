@@ -11,7 +11,7 @@ import org.graylog.events.notifications.EventNotificationConfig;
 import org.graylog2.contentpacks.model.entities.EntityDescriptor;
 import org.graylog2.contentpacks.model.entities.references.ValueReference;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
 import java.util.Set;
 

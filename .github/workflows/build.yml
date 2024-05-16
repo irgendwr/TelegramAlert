@@ -39,10 +39,9 @@ jobs:
         git clone --depth 1 --branch "${{ env.GRAYLOG_VERSION }}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
         pushd ../graylog2-server
         mvn generate-resources -pl graylog2-server -B -V
-        pushd graylog2-web-interface
-        yarn install
-        env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
-        popd; popd
+        pushd ../graylog2-server
+        mvn compile
+        popd
     - name: Build
       run: mvn -B package --file pom.xml
     - name: Package deb

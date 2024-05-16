@@ -15,18 +15,20 @@ echo "Checking out Graylog ${GRAYLOG_VERSION}"
 git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
 # Build Graylog web interface
 pushd ../graylog2-server
-mvn generate-resources -pl graylog2-server -B -V
-pushd graylog2-web-interface
-yarn install
-env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
-popd; popd
+mvn compile
+popd
 ```
 
 ## Build
 
 Run `mvn clean package` to build a JAR file.
 
-Note: You may need to define the correct Java version for Maven, eg. via `export JAVA_HOME=/usr/lib/jvm/java-17-openjdk`
+Note: You may need to define the correct Java version for Maven, eg. via
+
+```bash
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+export PATH="/usr/lib/jvm/java-17-openjdk/bin/:$PATH"
+```
 
 *Alternatively, the [Graylog documentation](https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/plugins.html?tocpath=What%20More%20Can%20Graylog%20Do%20for%20Me%253F%7CPlugins%7C_____0#WritingPlugins) describes how to create a convenient setup with hot reloading.*
 
@@ -56,7 +58,7 @@ echo "Checking out Graylog ${GRAYLOG_VERSION}"
 git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
 # Build Graylog web interface
 pushd ../graylog2-server
-mvn generate-resources -pl graylog2-server -B -V
+mvn compile
 popd
 ```
 
@@ -65,7 +67,7 @@ or update your graylog-project setup:
 ```bash
 # adjust the path below
 cd graylog-project
-# replace <VERSION> with the Graylog version (e.g. 5.0.1)
+# replace <VERSION> with the Graylog version (e.g. 6.0.1)
 graylog-project graylog-version --force-https-repos --set <VERSION>
 ```
 
@@ -105,11 +107,11 @@ Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` envir
 
 ```bash
 pushd ../graylog2-server
-mvn generate-resources -pl graylog2-server -B -V
+mvn compile
 pushd graylog2-web-interface
 # Build Vendor Manifest:
 yarn install
-env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
+yarn run build
 popd; popd
 ```
 
