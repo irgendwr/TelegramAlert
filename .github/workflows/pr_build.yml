@@ -39,4 +39,4 @@ jobs:
         ./mvnw compile
         popd
     - name: Build
-      run: mvn -B package --file pom.xml
+      run: ../graylog2-server/mvnw -B package --file pom.xml
