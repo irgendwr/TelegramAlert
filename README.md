@@ -7,7 +7,7 @@ TelegramNotification allows you to send [Graylog](https://www.graylog.org) alert
 
 ## Requirements
 
-Requires Graylog 5 or later. It's recommended to use the [latest Graylog release](https://www.graylog.org/products/latestversion).
+Requires Graylog 6. Check the release notes for details.
 
 ## Installation
 
