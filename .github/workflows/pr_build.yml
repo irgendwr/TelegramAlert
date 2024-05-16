@@ -36,7 +36,7 @@ jobs:
         echo "Checking out Graylog ${{ env.GRAYLOG_VERSION }}"
         git clone --depth 1 --branch "${{ env.GRAYLOG_VERSION }}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
         pushd ../graylog2-server
-        mvn compile
+        ./mvnw compile
         popd
     - name: Build
       run: mvn -B package --file pom.xml
