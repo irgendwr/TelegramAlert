@@ -44,7 +44,7 @@ public abstract class TelegramEventNotificationConfig implements EventNotificati
 
     @JsonProperty(FIELD_CHATS)
     @NotBlank
-    public abstract Set<String> chats();
+    public abstract ImmutableSet<String> chats();
 
     @JsonProperty(FIELD_MESSAGE_TEMPLATE)
     @NotBlank

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.auto.value.AutoValue;
+import com.google.common.collect.ImmutableSet;
+
 import de.irgendwr.TelegramEventNotificationConfig;
 import org.graylog.events.contentpack.entities.EventNotificationConfigEntity;
 import org.graylog.events.notifications.EventNotificationConfig;
@@ -39,7 +41,7 @@ public abstract class TelegramEventNotificationConfigEntity implements EventNoti
 
     @JsonProperty(FIELD_CHATS)
     @NotBlank
-    public abstract Set<String> chats();
+    public abstract ImmutableSet<String> chats();
 
     @JsonProperty(FIELD_MESSAGE_TEMPLATE)
     @NotBlank
