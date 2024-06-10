@@ -27,7 +27,7 @@ jobs:
         echo "GRAYLOG_VERSION=${GRAYLOG_VERSION}" >> $GITHUB_ENV
         echo "::set-output name=GRAYLOG_VERSION::$GRAYLOG_VERSION"
         echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       id: cache
       with:
         path: /home/runner/work/TelegramAlert/graylog2-server
@@ -38,19 +38,16 @@ jobs:
         echo "Checking out Graylog ${{ env.GRAYLOG_VERSION }}"
         git clone --depth 1 --branch "${{ env.GRAYLOG_VERSION }}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
         pushd ../graylog2-server
-        mvn generate-resources -pl graylog2-server -B -V
-        pushd graylog2-web-interface
-        yarn install
-        env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
-        popd; popd
+        ./mvnw compile
+        popd
     - name: Build
-      run: mvn -B package --file pom.xml
+      run: ../graylog2-server/mvnw -B package --file pom.xml
     - name: Package deb
       if: startsWith(github.ref, 'refs/tags/v')
-      run: mvn jdeb:jdeb
+      run: ../graylog2-server/mvnw jdeb:jdeb
     - name: Package rpm
       if: startsWith(github.ref, 'refs/tags/v')
-      run: mvn rpm:rpm
+      run: ../graylog2-server/mvnw rpm:rpm
     - name: Cleanup
       if: startsWith(github.ref, 'refs/tags/v')
       run: rm -f target/original-*.jar
