@@ -2,7 +2,7 @@ name: pr_build
 
 on:
   pull_request:
-    branches: [ master, dev ]
+    branches: [ master, dev, experiment240 ]
 
 jobs:
   build:

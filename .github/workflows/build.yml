@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, experiment240 ]
     tags:
       - 'v*'
 
@@ -64,18 +64,18 @@ jobs:
           target/**/*.rpm
         body: |
           This release **requires Graylog X.X.X or later**
-          
+
           To update the plugin you need to remove the old `telegram-alert-x.x.x.jar` file from your plugins folder and follow the [installation instructions](https://github.com/irgendwr/TelegramAlert#installation) again.
-          
+
           ## Changelog
-          
+
           - XXX
-          
+
           ---
-          
+
           In case you like this plugin I would be happy if you could star ⭐️ this repository to keep me motivated 😄
           If you want to support my work directly, you can also [sponsor me on GitHub](https://github.com/sponsors/irgendwr).
-          
+
           TelegramAlert currently has XXX ⭐ stars.
         draft: true
       env:
