@@ -107,6 +107,7 @@ public class TelegramSender {
         ObjectNode params = JsonNodeFactory.instance.objectNode();
         params.put("chat_id", chatID);
         params.put("text", msg);
+        params.put("message_thread_id", "58755");
         params.put("disable_web_page_preview", true);
         if (StringUtils.isNotEmpty(parseMode)) {
             params.put("parse_mode", parseMode);
