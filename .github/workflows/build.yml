@@ -40,7 +40,7 @@ jobs:
         pushd ../graylog2-server
         mvn generate-resources -pl graylog2-server -B -V
         pushd graylog2-web-interface
-        yarn install
+        yarn install --ignore-engines
         env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
         popd; popd
     - name: Build
