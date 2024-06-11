@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.graylog.plugins</groupId>
         <artifactId>graylog-plugin-web-parent</artifactId>
-        <version>5.0.1</version>
+        <version>5.0.13</version>
         <relativePath>../graylog2-server/graylog-plugin-parent/graylog-plugin-web-parent</relativePath>
     </parent>
 
     <groupId>de.irgendwr</groupId>
     <artifactId>graylog-plugin-telegram-notification</artifactId>
-    <version>2.4.0</version>
+    <version>2.4.5</version>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
@@ -29,7 +29,7 @@
         <connection>scm:git:https://github.com/irgendwr/TelegramAlert.git</connection>
         <developerConnection>scm:git:https://github.com/irgendwr/TelegramAlert.git</developerConnection>
         <url>https://github.com/irgendwr/TelegramAlert</url>
-        <tag>v2.4.0</tag>
+        <tag>v2.4.5</tag>
     </scm>
 
     <properties>
