@@ -254,7 +254,7 @@
                                     <goal>install-node-and-yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>${nodejs.version}</nodeVersion>
+                                    <nodeVersion>18.17.0</nodeVersion>
                                     <yarnVersion>${yarn.version}</yarnVersion>
                                 </configuration>
                             </execution>
