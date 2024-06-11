@@ -19,9 +19,6 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get -y install libxml2-utils rpm
-        sudo apt install -y curl
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-        sudo apt install -y nodejs
     - name: Graylog version
       id: vinfo
       run: |
@@ -43,6 +40,9 @@ jobs:
         pushd ../graylog2-server
         mvn generate-resources -pl graylog2-server -B -V
         pushd graylog2-web-interface
+        sudo apt install -y curl
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo apt install -y nodejs
         yarn install
         env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
         popd; popd
