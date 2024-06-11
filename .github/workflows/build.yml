@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ master, dev, experiment240 ]
+    branches: [ master, dev ]
     tags:
       - 'v*'
 
@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Java 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
         java-version: '17'
@@ -27,7 +27,7 @@ jobs:
         echo "GRAYLOG_VERSION=${GRAYLOG_VERSION}" >> $GITHUB_ENV
         echo "::set-output name=GRAYLOG_VERSION::$GRAYLOG_VERSION"
         echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
-    - uses: actions/cache@v3
+    - uses: actions/cache@v2
       id: cache
       with:
         path: /home/runner/work/TelegramAlert/graylog2-server
@@ -64,18 +64,18 @@ jobs:
           target/**/*.rpm
         body: |
           This release **requires Graylog X.X.X or later**
-
+          
           To update the plugin you need to remove the old `telegram-alert-x.x.x.jar` file from your plugins folder and follow the [installation instructions](https://github.com/irgendwr/TelegramAlert#installation) again.
-
+          
           ## Changelog
-
+          
           - XXX
-
+          
           ---
-
+          
           In case you like this plugin I would be happy if you could star ⭐️ this repository to keep me motivated 😄
           If you want to support my work directly, you can also [sponsor me on GitHub](https://github.com/sponsors/irgendwr).
-
+          
           TelegramAlert currently has XXX ⭐ stars.
         draft: true
       env:
