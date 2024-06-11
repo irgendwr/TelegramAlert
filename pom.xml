@@ -260,10 +260,10 @@
                             </execution>
 
                             <execution>
-                                <!--<id>yarn install</id>
+                                <id>yarn install</id>
                                 <goals>
                                     <goal>yarn</goal>
-                                </goals>-->
+                                </goals>
                                 <!-- Optional configuration which provides for running any npm command -->
                                 <configuration>
                                     <arguments>install</arguments>
