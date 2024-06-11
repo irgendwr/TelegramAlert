@@ -22,7 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21",
-    "react-select": "^4.3.0",
+    "react-select": "5.8.0",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
