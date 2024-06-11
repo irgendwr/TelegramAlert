@@ -598,7 +598,7 @@
                                     <goal>install-node-and-yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>18.18.2</nodeVersion>
+                                    <nodeVersion>v18.18.2</nodeVersion>
                                     <yarnVersion>${yarn.version}</yarnVersion>
                                 </configuration>
                             </execution>
