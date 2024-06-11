@@ -47,7 +47,11 @@ jobs:
         env disable_plugins=true ./node_modules/.bin/webpack --config webpack.vendor.js
         popd; popd
     - name: Build
-      run: mvn -B package --file pom.xml
+      run: |
+        sudo apt install -y curl
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo apt install -y nodejs
+        mvn -B package --file pom.xml
     - name: Package deb
       if: startsWith(github.ref, 'refs/tags/v')
       run: mvn jdeb:jdeb
