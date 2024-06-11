@@ -158,7 +158,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
+            <version>3.14.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- Include source from test-jar to reuse test classes. -->
