@@ -67,8 +67,7 @@ document.getElementById("refresh").onclick = function() {
             return;
         }
 
-        console.log("Data:");
-        console.log(data);
+        console.log("Data:", data);
 
         status.textContent = 'Success';
         data.result.forEach(entry => {
@@ -79,8 +78,7 @@ document.getElementById("refresh").onclick = function() {
         });
     })
     .catch(err => {
-        console.log("Error:");
-        console.log(err);
+        console.error(err);
 
         status.textContent = `Error: ${err}`;
     });
@@ -117,6 +115,30 @@ function createMessage(message) {
         userText.innerHTML += "<br>";
         userText.append(`Name: ${from.first_name||''} ${from.last_name||''} ${from.username ? `(@${from.username})` : ''}`);
         msg.append(userText);
+    }
+
+    let forward_from = message.forward_from;
+    if (forward_from) {
+        msg.innerHTML += "<h4>Forwarded from User</h4>";
+        let userText = document.createElement("p");
+        userText.append(`ID: ${message.forward_from.id}`);
+        userText.innerHTML += "<br>";
+        userText.append(`Name: ${forward_from.first_name||''} ${forward_from.last_name||''} ${forward_from.username ? `(@${forward_from.username})` : ''}`);
+        msg.append(userText);
+    }
+
+    let forward_from_chat = message.forward_from_chat;
+    if (forward_from_chat) {
+        msg.innerHTML += "<h4>Forwarded from Chat</h4>";
+        let chatText = document.createElement("p");
+        chatText.append(`ID: ${forward_from_chat.id}`);
+        if (forward_from_chat.title) {
+            chatText.innerHTML += "<br>";
+            chatText.append(`Title: ${forward_from_chat.title}`);
+        }
+        chatText.innerHTML += "<br>";
+        chatText.append(`Type: ${forward_from_chat.type}`);
+        msg.append(chatText);
     }
 
     return msg;
