@@ -13,9 +13,8 @@ export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-nam
 # Checkout desired Graylog version
 echo "Checking out Graylog ${GRAYLOG_VERSION}"
 git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
-# Build Graylog web interface
 pushd ../graylog2-server
-mvn compile
+./mvnw compile
 popd
 ```
 
@@ -56,9 +55,8 @@ export GRAYLOG_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-nam
 # Checkout desired Graylog version
 echo "Checking out Graylog ${GRAYLOG_VERSION}"
 git clone --depth 1 --branch "${GRAYLOG_VERSION}" https://github.com/Graylog2/graylog2-server.git ../graylog2-server
-# Build Graylog web interface
 pushd ../graylog2-server
-mvn compile
+./mvnw compile
 popd
 ```
 
@@ -99,9 +97,13 @@ docker rm mongo elasticsearch
 
 ## Troubleshooting
 
+### Unrecognized option: --add-exports
+
+Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` and `PATH` environment variables as shown above.
+
 ### class file has wrong version
 
-Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` environment variable, eg. via `export JAVA_HOME=/usr/lib/jvm/java-17-openjdk`.
+Ensure that Maven uses the correct Java version by setting the `JAVA_HOME` and `PATH` environment variables as shown above.
 
 ### Cannot find module '.../graylog2-server/graylog2-web-interface/manifests/vendor-manifest.json'
 
