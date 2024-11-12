@@ -2,7 +2,7 @@
 
 ## Getting started
 
-This project is using [Maven](https://maven.apache.org) 3 and requires Java 8 or higher.
+This project is using [Maven](https://maven.apache.org) 3 and requires whatever Java version that Graylog requires (Java 17 or higher?).
 
 ```bash
 git clone https://github.com/irgendwr/TelegramAlert.git
@@ -20,7 +20,7 @@ popd
 
 ## Build
 
-Run `mvn clean package` to build a JAR file.
+Run `../graylog2-server/mvnw -B package --file pom.xml` to build a JAR file.
 
 Note: You may need to define the correct Java version for Maven, eg. via
 
@@ -36,7 +36,7 @@ export PATH="/usr/lib/jvm/java-17-openjdk/bin/:$PATH"
 We are using the maven release plugin:
 
 ```bash
-mvn release:prepare -Dresume=false
+../graylog2-server/mvnw release:prepare -Dresume=false
 ```
 
 This sets the version numbers, creates a tag and pushes to GitHub. GitHub will build and release artifacts automatically.
