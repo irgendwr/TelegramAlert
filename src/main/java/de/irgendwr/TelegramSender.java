@@ -57,6 +57,7 @@ public class TelegramSender {
         proxyPassword = password;
     }
 
+    @SuppressWarnings("StringSplitter")
     public void sendMessage(String chatID, String message) throws TelegramSenderException {
         final CloseableHttpClient client;
 
