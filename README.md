@@ -55,6 +55,7 @@ Contributions are welcome.
 
 Thanks to:
 
+- @Hursofid - *for their donation*
 - Alexey Medov - *for his ideas and donation!*
 - Everyone that [starred this repository](https://github.com/irgendwr/TelegramAlert/stargazers) ⭐️ - *you keep me motivated* 🙂
 - [Contributors](https://github.com/irgendwr/TelegramAlert/graphs/contributors) that submitted useful [pull-requests](https://github.com/irgendwr/TelegramAlert/pulls?utf8=%E2%9C%93&q=is%3Apr+is%3Aclosed+is%3Amerged) or opened good issues with suggestions or a detailed bug report.
