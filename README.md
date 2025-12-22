@@ -1,5 +1,7 @@
 # TelegramNotification Plugin for Graylog
 
+## ⚠️ This repository is no [longer maintained](https://github.com/irgendwr/TelegramAlert/issues/66) ⚠️
+
 [![Build status](https://github.com/irgendwr/TelegramAlert/workflows/build/badge.svg)](https://github.com/irgendwr/TelegramAlert/actions?query=workflow%3Abuild)
 [![GitHub Release](https://img.shields.io/github/release/irgendwr/TelegramAlert.svg)](https://github.com/irgendwr/TelegramAlert/releases)
 
