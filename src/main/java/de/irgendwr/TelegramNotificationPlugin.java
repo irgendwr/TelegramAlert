@@ -36,7 +36,7 @@ public class TelegramNotificationPlugin implements Plugin {
     
         @Override
         public String getAuthor() {
-            return "Jonas Bögle <graylog@jonas.boegle.me>";
+            return "Jona Bögle <graylog@jona.boegle.me>";
         }
     
         @Override

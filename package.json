@@ -18,7 +18,7 @@
   "keywords": [
     "graylog"
   ],
-  "author": "Jonas Bögle <graylog@jonas.boegle.me>",
+  "author": "Jona Bögle <graylog@jona.boegle.me>",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21",
